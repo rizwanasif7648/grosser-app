@@ -1,0 +1,62 @@
+<%= form_with(model: box, local: true, class: 'p-4 bg-white my-3 rounded-sm', id: 'box_form') do |form| %>
+  <%= render "shared/resource_errors", resource: box %>
+  <div class="row">
+    <div class="col-sm-10">
+      <div class="row">
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :location, class: 'text-dark required'  %>
+          <%= form.text_field :location, class: 'extended-form-control required', placeholder: 'Enter location', required: true , maxlength: 16, disabled: (form.object.new_record? ? false : true) %>
+        </div>
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :box_type,'Type',  class: 'text-dark required'  %>
+          <%= form.select :box_type, options_from_collection_for_select(box_types, 'value', 'key', box.box_type), {:prompt => "Select box type"}, class: 'extended-form-control', required: true%>
+        </div>
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :customer_id,'Select Customer', class: 'text-light-black required'  %>
+          <%= form.select :customer_id, options_from_collection_for_select(customers, "id", "name", box.customer_id), {:prompt => "Select Customer"}, required: true, class: 'extended-form-control required', disabled: box.persisted? %>
+        </div>
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :status,'Status',  class: 'text-dark required' %>
+          <%= form.select(:status, Box.status_options.map {|k, v| [k.humanize.capitalize, k]}, {:include_blank => 'Select status'}, {:required => true, class: 'extended-form-control'}) %>
+        </div>
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2 <%= box.persisted? ? 'd-none' : '' %>">
+          <% if box.persisted? %>
+            <%= form.label :user_id,'Select User', class: 'text-light-black required'  %>
+            <%= form.select :user_id, (options_from_collection_for_select([], "id", "name")), {:prompt => "Select User"}, disabled: true, class: 'extended-form-control required'%>
+            <%= form.hidden_field :customer_id %>
+          <% else %>
+            <%= form.fields_for :user_boxes do |user_box_fields| %>
+              <%= user_box_fields.label :user_id,'Select User', class: 'text-light-black required'  %>
+              <%= user_box_fields.select :user_id, (form.object.new_record? ? options_from_collection_for_select([], "id", "name") : options_from_collection_for_select(box.customer.users, "id", "name")), {:prompt => "Select User"}, required: true, class: 'extended-form-control required', required: true%>
+              <%= user_box_fields.hidden_field :customer_id %>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="extended-form-group col-sm-3 col-md-6 col-xl-3 pl-sm-5 mb-0 mt-2 ml-1 ml-sm-0">
+          <%= form.label :min_products, 'Min Products', class: 'text-dark required'  %>
+          <div class="row box-products ml-0">
+            <span class="minus">-</span>
+            <%= form.number_field :min_products, class: 'extended-form-control required box_product_count product_count', value: (form.object.new_record? ? 1 : form.object.min_products), required: true%>
+            <span class="plus">+</span>
+            <label id="box_min_products-error" class="error" for="box_min_products"></label>
+          </div>
+        </div>
+        <div class="extended-form-group col-sm-3 col-md-6 col-xl-3 pl-sm-5 mb-0 mt-2 ml-1 ml-sm-0">
+          <%= form.label :max_products, 'Max Products', class: 'text-dark pl-1 required'  %>
+          <div class="row box-products ml-1">
+            <span class="minus">-</span>
+            <%= form.number_field :max_products, class: 'extended-form-control required box_product_count product_count', value: (form.object.new_record? ? 1 : form.object.max_products), required: true%>
+            <span class="plus">+</span>
+          </div>
+        </div>
+
+        <div class="extended-form-group col-md-12 col-sm-6 pl-sm-5 mb-0 mt-2">
+          <div class="actions text-center text-sm-left">
+            <%= form.submit 'Submit', class: 'btn extended-btn btn-danger px-4 px-md-5 mb-2'%>
+            <%= link_to 'Cancel', boxes_path, class: 'btn extended-btn btn-default px-4 px-md-5 ml-sm-4 cancel-btn mb-2'%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

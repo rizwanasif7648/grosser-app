@@ -1,0 +1,40 @@
+<div id="box-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="col-sm-12 col-sm-5 pl-sm-5 mb-0 mt-2">
+        <h5 class="text-dark text-center">Add Product</h5>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: "/boxes/#{@box.id}/create_product_box", remote: true, id: "product_box_form" do |form| %>
+          <div class="form-group">
+            <div id="form_errors" style="display:none;" class="col-sm-12 pl-sm-5"></div>
+            <div class="extended-form-group col-sm-12 pl-sm-5 mb-0 mt-2">
+              <%= form.label :product_id,'Product', class: 'text-light-black required'  %>
+              <%= form.select :product_id, options_for_select(possible_box_products(@box).map{ |product| [product.name, product.id, { 'data-expiry' => product.is_expirable }] }), {:prompt => "Select Product"}, required: true, class: 'extended-form-control required', required: true%>
+              <%= form.hidden_field :customer_id, value: @box.customer_id %>
+            </div>
+            <div class="extended-form-group col-sm-12 pl-sm-5 mb-0 mt-2">
+              <%= form.label :count, class: 'text-dark required'  %>
+              <%= form.number_field :count, class: 'extended-form-control required', placeholder: 'Enter Count', required: true, min: 1 %>
+            </div>
+            <div class="extended-form-group col-sm-12 pl-sm-5 mb-0 mt-2">
+              <%= form.label :threshold, class: 'text-dark required'  %>
+              <%= form.number_field :threshold, class: 'extended-form-control required', placeholder: 'Enter Threshold', required: true, min: 1 %>
+            </div>
+            <div class="extended-form-group col-sm-12 pl-sm-5 mb-0 mt-2">
+              <%= form.label :expiry, class: 'text-dark required'  %>
+              <%= form.date_field :expiry, class: 'extended-form-control required', placeholder: 'Expiry Date', required: true, min: Date.today %>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <%= form.submit "OK", class: "btn btn-danger bg-red" %>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>

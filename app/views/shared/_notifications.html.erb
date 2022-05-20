@@ -1,0 +1,16 @@
+<h6 class="dropdown-header">
+  Alerts Center
+</h6>
+<% notifications.each do |notification| %>
+  <a class="dropdown-item d-flex align-items-center <%= notification.read? ? '' : 'unread_notification' %>">
+    <div class="mr-3">
+      <div class="icon-circle bg-black p1">
+        <%= image_tag 'logo_3x', class: 'img-fluid' %>
+      </div>
+    </div>
+    <div>
+      <span class="roboto-bold"><%= notification.title %></span> <br>
+      <%= notification.body %>
+    </div>
+  </a>
+<% end %>

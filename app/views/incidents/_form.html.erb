@@ -1,0 +1,83 @@
+<%= form_with(model: incident, local: true, class: 'p-4 bg-white my-3 rounded-sm', id: 'incident_form') do |form| %>
+  <%= render "shared/resource_errors", resource: incident %>
+    <div class="row">
+      <div class="col-sm-10">
+        <div class="row">
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :date_time, 'Date', class: 'text-dark required'  %>
+            <%= form.date_field :date_time, class: 'extended-form-control required', :value => Time.now.strftime('%Y-%m-%d'), required: true, max: Date.today %>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label 'Time', class: 'text-dark required'  %>
+            <%= form.time_field 'time', class: 'extended-form-control required', :value => Time.now.strftime('%H:%M'), required: true %>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :customer_id,'Customer', class: 'text-light-black required'  %>
+            <%= form.select :customer_id, options_from_collection_for_select(customers, "id", "name", incident.customer_id), {:prompt => "Select Customer"}, required: true, class: 'extended-form-control required', required: true%>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :user_id,'User', class: 'text-light-black required'  %>
+            <%= form.select :user_id, options_from_collection_for_select([], "id", "name"), {:prompt => "Select User"}, required: true, class: 'extended-form-control required', required: true%>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :box_id,'Box', class: 'text-light-black required'  %>
+            <%= form.select :box_id, options_from_collection_for_select([], "id", "code"), {:prompt => "Select Box"}, required: true, class: 'extended-form-control required', required: true%>
+          </div>
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2 d-none d-sm-block">
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :product_id,'Product', class: 'text-light-black required'  %>
+            <%= form.text_field :product_id, class: 'extended-form-control', placeholder: 'Select Product', maxlength: 70 %>
+          </div>
+          <div class="col-sm-6 pl-sm-5 mb-0 mt-2">
+            <label for="nil" class="d-none d-sm-block">&nbsp;</label>
+            <%= link_to_add_row('Add', form, :product_incidents, class: 'btn extended-btn btn-danger px-5') %>
+          </div>
+          <div class="col-sm-6 pl-sm-5 mb-0 mt-2">
+            <div id="expiry_error">
+            </div>
+          </div>
+
+          <div class="extended-form-group col-xl-8 col-lg-10 pl-sm-5 mb-0 mt-2">
+            <div class="table-responsive col-12 text-nowrap px-sm-0 pb-3">
+              <table class="table table-borderless text-light-black w-100" id="incidents_table">
+                <thead>
+                  <tr class="text-red">
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class='fields bg-white rounded'>
+                  <td class="rounded-sm text-light-black" id='selected_product_picture'></td>
+                  <td class="rounded-sm text-light-black" id='selected_product_name'></td>
+                  <td class="rounded-sm text-light-black" id='selected_product_id'></td>
+                  <td class="rounded-sm text-light-black" id='selected_product_expiry'></td>
+                  <%= form.fields_for :product_incidents do |builder| %>
+                    <%= render 'product_incident', f: builder %>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="extended-form-group col-md-12 pl-sm-5 mb-0 mt-2 submit-btn-div d-none">
+            <div class="actions text-center text-sm-left">
+              <%= form.submit 'Submit', class: 'btn extended-btn btn-danger px-4 px-md-5 mb-2'%>
+              <%= link_to 'Cancel', root_path, class: 'btn extended-btn btn-default px-4 px-md-5 ml-sm-4 cancel-btn mb-2'%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>

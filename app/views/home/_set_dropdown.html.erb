@@ -1,0 +1,4 @@
+<option value="" [selected]=true [disabled]="true"><%= label %></option>
+<% options.each do |option| %>
+  <option value="<%= option.first %>"><%= option.last %></option>
+<% end %>

@@ -1,0 +1,236 @@
+<%= render 'shared/title_bar', heading: 'OVERVIEW' %>
+
+<div class="row pt-2 pb-4 px-sm-2">
+  <div class="col-sm-4">
+    <%= label_tag :customer_id,'Select Customer', class: 'text-light-black' %>
+    <%= select_tag "customer",  options_from_collection_for_select(customers, "id", "name", @customer.id), {:id =>"select_customer",:class => 'extended-form-control',:prompt => "Please Select a Customer"} %>
+    <%= hidden_field_tag "customer_id", params[:customer_id] ,id:"customer_id" %>
+  </div>
+</div>
+
+<div class="row px-sm-2">
+  <div class="col-lg-4 col-md-6">
+    <div class="bg-white logbook-table p-4">
+      <div class="tile-stats">
+        <h6 class="dashboard-text-color">No of boxes</h6>
+      </div>
+      <div class="row">
+        <div class="col-4 mt-3">
+          <div class="count mt-4 text-dark-50"><%= @total_boxes %></div>
+        </div>
+        <div class="col-8 justify-content-end d-flex">
+          <%= image_tag 'blue_graph', class: 'img-fluid mt-4' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 mt-3 mt-md-0">
+    <div class="bg-white logbook-table p-4">
+      <div class="tile-stats">
+        <h6 class="dashboard-text-color">Total Boxes in Red Zone</h6>
+      </div>
+      <div class="row">
+        <div class="col-4 mt-3">
+          <div class="count mt-4 text-dark-50"><%= @red_boxes %></div>
+        </div>
+        <div class="col-8 justify-content-end d-flex">
+          <%= image_tag 'red_graph', class: 'img-fluid mt-4' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 mt-3 mt-lg-0">
+    <div class="bg-white logbook-table p-4">
+      <div class="tile-stats">
+        <h6 class="dashboard-text-color">Total Boxes in Yellow Zone</h6>
+      </div>
+      <div class="row">
+        <div class="col-4 mt-3">
+          <div class="count mt-4 text-dark-50"><%= @yellow_boxes %></div>
+        </div>
+        <div class="col-8 justify-content-end d-flex">
+          <%= image_tag 'yellow_graph', class: 'img-fluid mt-4' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4 px-sm-2">
+  <div class="col-lg-6">
+    <div class="bg-white logbook-table">
+      <div class="tile-stats pt-4 px-3 row">
+        <div class="col-xl-4">
+          <span class="graph-heading small">BOXES IN RED ZONE</span>
+        </div>
+        <div class="col-xl-8 mt-2 mt-xl-0 text-xl-right">
+          <button class="btn-sm border-0 btn-danger font-size-smaller red_boxes_btn" data-value="week">1 week</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller red_boxes_btn" data-value="month">1 month</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller red_boxes_btn" data-value="3 months">3 months</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller red_boxes_btn" data-value="6 months">6 months</button>
+        </div>
+      </div>
+      <div class="row px-3 mt-5">
+        <div id="red_zone_box" class="w-100 h-100"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 mt-3 mt-lg-0">
+    <div class="bg-white logbook-table">
+      <div class="tile-stats pt-4 px-3 row">
+        <div class="col-xl-4">
+          <span class="graph-heading small">INCIDENCES PER BOX</span>
+        </div>
+        <div class="col-xl-8 mt-2 mt-xl-0 text-xl-right">
+          <button class="btn-sm border-0 btn-danger font-size-smaller incident_boxes_btn" data-value="week">1 week</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller incident_boxes_btn" data-value="month">1 month</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller incident_boxes_btn" data-value="3 months">3 months</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller incident_boxes_btn" data-value="6 months">6 months</button>
+        </div>
+      </div>
+      <div class="row px-3 mt-5">
+        <div id="yellow_zone_chart" class="w-100 h-100"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4 px-sm-2">
+  <div class="col-lg-12">
+    <div class="bg-white logbook-table">
+      <div class="tile-stats p-3 row">
+        <div class="col-xl-4">
+          <span class="graph-heading small">MOST CONSUMED PRODUCTS</span>
+        </div>
+        <div class="col-xl-8 mt-2 mt-xl-0 text-xl-right">
+          <button class="btn-sm border-0 btn-month font-size-smaller consumed_product_btn" data-value="week">1 week</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller consumed_product_btn" data-value="month">1 month</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller consumed_product_btn" data-value="3 months">3 months</button>
+          <button class="btn-sm border-0 btn-danger font-size-smaller consumed_product_btn" data-value="6 months">6 months</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-2 px-sm-2">
+  <div class="col-lg-6 table-responsive col-12 text-nowrap">
+    <table class="table table-borderless dataTable" id="dashboard_table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Quantity</th>
+      </tr>
+      </thead>
+      <tbody class="bg-white rounded logbook-table" style="height: 300px;">
+      <% @consumed_products.each do |consumed_product| %>
+        <tr>
+          <td class="border-bottom rounded-sm text-light-black"> <%= consumed_product.name %> </td>
+          <td class="border-bottom rounded-sm text-light-black"> <%= consumed_product.code %> </td>
+          <td class="border-bottom rounded-sm text-light-black"> <%= consumed_product.quantity %> </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-lg-6 ">
+    <div class="tile-stats py-3">
+      <span class="graph-heading">Most Consumed Products Chart</span>
+    </div>
+    <div class="logbook-table">
+      <div id="chartContainer" class="w-100 h-100"></div>
+      <div class="noChartData bg-white mt-n1 text-center p-2" id="products_by_customers_no_chart">No data available</div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4 px-sm-2">
+  <div class="col-lg-12">
+    <div class="bg-white logbook-table">
+      <div class="tile-stats p-3 row">
+        <div class="col-xl-4">
+          <span class="graph-heading small">MOST CONSUMED PRODUCTS BY BOXES</span>
+        </div>
+        <div class="col-xl-8 mt-2 mt-xl-0 text-xl-right">
+          <button class="btn-sm border-0 btn-month font-size-smaller consumed_products_boxes" data-value="week">1 week</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller consumed_products_boxes" data-value="month">1 month</button>
+          <button class="btn-sm border-0 btn-month font-size-smaller consumed_products_boxes" data-value="3 months">3 months</button>
+          <button class="btn-sm border-0 btn-danger font-size-smaller consumed_products_boxes" data-value="6 months">6 months</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @customer.boxes.present? %>
+  <div class="row mt-4 px-sm-2">
+    <div class="col-sm-4">
+      <%= select_tag "box",  options_from_collection_for_select(@customer.boxes, "id", "code", @customer.boxes.first.id), {:id =>"select_box",:class => 'extended-form-control mt-2',:prompt => "Please Select a Box"} %>
+      <%= hidden_field_tag "box_id", params[:box_id] ,id:"box_id" %>
+    </div>
+  </div>
+  <div class="row mt-2 px-sm-2 pb-4">
+    <div class="col-lg-6 table-responsive col-12 text-nowrap">
+      <table class="table table-borderless dataTable" id="products_by_boxes_table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody class="bg-white rounded logbook-table" style="height: 300px;">
+        <% @products_by_boxes.each do |consumed_product| %>
+          <tr>
+            <td class="border-bottom rounded-sm text-light-black"> <%= consumed_product.name %> </td>
+            <td class="border-bottom rounded-sm text-light-black"> <%= consumed_product.code %> </td>
+            <td class="border-bottom rounded-sm text-light-black"> <%= consumed_product.quantity %> </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-6">
+      <div class="tile-stats py-3">
+        <span class="graph-heading">Most Consumed Products By Boxes Chart</span>
+      </div>
+      <div class="logbook-table">
+        <div id="products_by_boxes_chart" class="w-100 h-100"></div>
+        <div class="noChartData bg-white mt-n1 text-center p-2" id="products_by_boxes_no_chart">No data available</div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="row mt-4 px-sm-2">
+    <div class="col-sm-4">
+      <%= select_tag "box",  options_from_collection_for_select(@customer.boxes, "id", "code"), {:id =>"select_box",:class => 'extended-form-control mt-2',:prompt => "Please Select a Box"} %>
+      <%= hidden_field_tag "box_id", params[:box_id] ,id:"box_id" %>
+    </div>
+  </div>
+  <div class="row mt-4 px-sm-2 pb-4">
+    <div class="col-lg-12">
+      <div class=" bg-white logbook-table">
+        <div class="text-center p-2" >There are no boxes associated with <%= @customer.name %> at the moment</div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= content_tag "div", id: "consumed_products", data: {products: @products} do %>
+<% end %>
+
+<%= content_tag "div", id: "consumed_products_by_boxes", data: {products: @products_by_box} do %>
+<% end %>
+
+<%= content_tag "div", id: "week_dates", data: {products: @week_dates} do %>
+<% end %>
+
+<%= content_tag "div", id: "incidents_per_week", data: {products: @incidents_per_week} do %>
+<% end %>
+
+<%= content_tag "div", id: "boxes_in_red_week_dates", data: {products: @red_boxes_week_dates} do %>
+<% end %>
+
+<%= content_tag "div", id: "boxes_in_red_week", data: {products: @boxes_in_red_week} do %>
+<% end %>

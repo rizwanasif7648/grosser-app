@@ -1,0 +1,9 @@
+form_errors = $("#form_errors");
+box_adjustment_form = $("#box_adjustment_form");
+form_errors.empty();
+adjustment = <%= @adjustment.to_json.html_safe %>
+    box_adjustment_form.trigger('reset');
+var htmlData = '<div class="alert alert-success alert-fade alert-dismissible text-center"> <button class="close" data-dismiss="alert" aria-label="close">x</button>Adjustment Added Successfully </div>';
+form_errors.append(htmlData);
+form_errors.show();
+location.reload();

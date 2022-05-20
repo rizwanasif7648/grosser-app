@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= favicon_link_tag 'logo_3x.png', rel: 'icon', type: 'image/png' %>
+    <title>3W App</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= stylesheet_link_tag    'application', media: 'all'%>
+    <%= javascript_include_tag 'application' %>
+    <script src="https://kit.fontawesome.com/e2fa0f8671.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
+  </head>
+
+  <body id="<%= "#{params[:controller].gsub('/','_')}-#{params[:action]}" %>">
+    <!-- Page Wrapper -->
+    <div class="ajax-call-loader" id="loading"></div>
+    <div id="wrapper" id="page-top">
+
+      <%= render 'shared/sidebar' %>
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+          <%= render 'shared/topbar' %>
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <%= render 'shared/server_alerts' %>
+            <%= yield %>
+          </div>
+          <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <%= render 'shared/footer' %>
+
+      </div>
+      <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#<%= "#{params[:controller].gsub('/','_')}-#{params[:action]}" %>">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <%= render 'shared/logout_modal' %>
+  </body>
+</html>

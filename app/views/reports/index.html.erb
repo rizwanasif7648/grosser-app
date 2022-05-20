@@ -1,0 +1,21 @@
+<%= render 'shared/title_bar', heading: 'Reports' %>
+<%= hidden_field_tag "customer_id", params[:customer_id] ,id:"customer_id" %>
+<ul class="nav nav-tabs mt-4 border-bottom-0" role="tablist">
+  <li class="nav-item border-left ">
+    <a class="nav-link medicine_tab active py-3 rounded-0" data-toggle="tab" href="#medicine_report_tab" role="tab">Medicine By Boxes</a>
+  </li>
+  <li class="nav-item border-left d-none">
+    <a class="nav-link user_tab py-3 rounded-0" data-toggle="tab" href="#user_report_tab" role="tab">User By Boxes</a>
+  </li>
+  <li class="nav-item border-left d-none">
+    <a class="nav-link customer_tab py-3 rounded-0" data-toggle="tab" href="#customer_report_tab" role="tab">Boxes By Customers</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane fade in active show medicine_reports" id="medicine_report_tab" name="medicine_report_tab" role="tabpanel">
+  </div>
+  <div class="tab-pane fade user_reports" id="user_report_tab" name="user_report_tab" role="tabpanel">
+  </div>
+  <div class="tab-pane fade customer_reports" id="customer_report_tab" name="customer_report_tab" role="tabpanel">
+  </div>
+</div>

@@ -1,0 +1,106 @@
+<%= form_with(model: role, local: true, class: 'p-4 bg-white my-3 rounded-sm', id: 'role_form') do |form| %>
+  <%= render "shared/resource_errors", resource: role %>
+  <div class="row">
+    <div class="col-lg-10">
+      <div class="row">
+
+        <div class="extended-form-group col-sm-6 col-md-6 col-lg-5 pl-lg-5 mb-0 mt-2">
+          <%= form.label :customer_id,'Select Customer', class: 'text-light-black required'  %>
+          <%= form.select :customer_id, options_from_collection_for_select(customers, "id", "name", role.customer_id), {:prompt => "Select Customer"}, required: true, class: 'extended-form-control required', required: true, disabled: role.persisted?%>
+        </div>
+
+        <div class="extended-form-group col-sm-6 col-md-6 col-lg-5 pl-lg-5 mb-0 mt-2">
+          <%= form.label :title,'Enter Role Title', class: 'text-light-black required'  %>
+          <%= form.text_field :title, class: 'extended-form-control required', placeholder: 'Enter title', required: true, maxlength: 20 %>
+        </div>
+
+        <div class="table-responsive pl-lg-5 col-12 text-nowrap">
+          <table class="table table-borderless text-light-black">
+            <thead>
+            <tr scope="row">
+              <th class="border-0 pl-sm-5">
+                <div class="custom-control custom-checkbox ">
+                  <input type="checkbox" id="all_permission" class="custom-control-input" />
+                  <label for="all_permission" class="custom-control-label"></label>
+                  <span class="ml-3">Module</span>
+                </div>
+              </th>
+              <th class="border-0 text-center">
+                <div class="custom-control custom-checkbox ">
+                  <input type="checkbox" id="create_permission" class="custom-control-input" />
+                  <label for="create_permission" class="custom-control-label"></label>
+                  <span class="ml-3">Create</span>
+                </div>
+              </th>
+              <th class="border-0 text-center">
+                <div class="custom-control custom-checkbox ">
+                  <input type="checkbox" id="read_permission" class="custom-control-input" />
+                  <label for="read_permission" class="custom-control-label"></label>
+                  <span class="ml-3">Read</span>
+                </div>
+              </th>
+              <th class="border-0 text-center">
+                <div class="custom-control custom-checkbox ">
+                  <input type="checkbox" id="update_permission" class="custom-control-input"  />
+                  <label for="update_permission" class="custom-control-label"></label>
+                  <span class="ml-3">Update</span>
+                </div>
+              </th>
+              <th class="border-0 text-center">
+                <div class="custom-control custom-checkbox ">
+                  <input type="checkbox" id="delete_permission" class="custom-control-input" />
+                  <label for="delete_permission" class="custom-control-label"></label>
+                  <span class="ml-3">Delete</span>
+                </div>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <%= form.fields_for :role_permissions do |role_permission_fields| %>
+              <tr scope="row">
+                <td class="pl-sm-4 h5 py-3 text-light-black bordered-shadow border rounded">
+                  <i class="<%= role_permission_fields.object.permission.icon %> mx-3 text-danger"></i>
+                  <%= role_permission_fields.object.permission.name %>
+                </td>
+                <td class="text-center py-3 bordered-shadow border rounded px-4">
+                  <div class="custom-control custom-checkbox ">
+                    <%= role_permission_fields.check_box :is_createable, class: 'custom-control-input create_permission', id: "create_"+role_permission_fields.object.permission.name %>
+                    <label for="create_<%= role_permission_fields.object.permission.name %>" class="custom-control-label create_permission"></label>
+                  </div>
+                </td>
+                <td class="text-center py-3 bordered-shadow border rounded px-4">
+                  <div class="custom-control custom-checkbox ">
+                    <%= role_permission_fields.check_box :is_readable, class: 'custom-control-input read_permission', id: "read_"+role_permission_fields.object.permission.name %>
+                    <label for="read_<%= role_permission_fields.object.permission.name %>" class="custom-control-label read_permission"></label>
+                  </div>
+                </td>
+                <td class="text-center py-3 bordered-shadow border rounded px-4">
+                  <div class="custom-control custom-checkbox ">
+                    <%= role_permission_fields.check_box :is_updateable, class: 'custom-control-input update_permission', id: "update_"+role_permission_fields.object.permission.name, disabled: editable?(role_permission_fields.object) %>
+                    <label for="update_<%= role_permission_fields.object.permission.name %>" class="custom-control-label update_permission"></label>
+                  </div>
+                </td>
+                <td class="text-center py-3 bordered-shadow border rounded px-4">
+                  <div class="custom-control custom-checkbox ">
+                    <%= role_permission_fields.check_box :is_deleteable, class: 'custom-control-input delete_permission', id: "delete_"+role_permission_fields.object.permission.name, disabled: editable?(role_permission_fields.object) %>
+                    <label for="delete_<%= role_permission_fields.object.permission.name %>" class="custom-control-label delete_permission"></label>
+                  </div>
+                </td>
+                <%= role_permission_fields.hidden_field :permission_id, :value => role_permission_fields.object.permission_id %>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="extended-form-group offset-xl-6 col-xl-6 pl-sm-5 mb-0 mt-2">
+          <div class="actions text-center text-right-left float-right">
+            <%= form.submit 'Save  ', class: 'btn extended-btn btn-danger px-5 my-2 font-weight-bold' %>
+            <%= link_to 'Cancel', roles_path, class: 'btn extended-btn btn-default px-5 ml-sm-4 float-sm-right my-2 grey-bg-white-text font-weight-bold'%>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<% end %>

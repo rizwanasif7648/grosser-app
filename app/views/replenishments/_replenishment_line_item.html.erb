@@ -1,0 +1,46 @@
+<tr class="cursor-pointer border-left border-right">
+  <td class="rounded-sm text-light-black product_incidents_list" id="product_picture"></td>
+  <td class="rounded-sm text-light-black" id="product_name"></td>
+  <td class="rounded-sm text-light-black pt-1 pl-0">
+    <div class="product_count_wrapper">
+      <div class="d-block">
+        <span class="minus btn py-2 px-3 w-auto"><i class="fas fa-minus small"></i></span>
+        <%= f.number_field :quantity, class: 'extended-form-control required product_count d-inline-block w-60 quantity-increase', value: 1, required: true %>
+        <span class="plus btn py-2 px-3 w-auto"><i class="fas fa-plus small"></i></span>
+      </div>
+      <label class="error d-block error-quantity mt-2" id="error-quantity"></label>
+    </div>
+  </td>
+  <td class="rounded-sm text-light-black pl-5">Expiry Date</td>
+  <td class="rounded-sm text-light-black pt-1">
+    <%= f.date_field :expiry_after, class: 'extended-form-control d-inline-block', placeholder: 'Expiry Date', required: true, min: Date.today, value: Date.today %>
+  </td>
+  <td class="rounded-sm text-light-black">
+    <%= f.hidden_field :_destroy %>
+    <%= link_to '#', class: 'remove_record pull-right' do %>
+      <div class="border-bottom rounded-sm custom-delete-icon text-center">
+        <i class="fas fa-trash mx-1"></i>
+      </div>
+    <% end %>
+    <%= f.hidden_field :product_id %>
+    <%= f.hidden_field :customer_id %>
+    <%= f.hidden_field :product_name %>
+    <%= f.hidden_field :quantity_after %>
+  </td>
+</tr>
+<tr class="cursor-pointer border-left border-bottom border-right logbook-table tr-background">
+  <td class="rounded-sm text-light-black" colspan="2">
+    Box Code:
+    <%= f.label :box_id, class: 'rounded-sm color-black border-0 pl-2' %>
+    <%= f.hidden_field :box_id %>
+  </td>
+  <td class="rounded-sm text-light-black text-center" colspan="2">
+    Qty before:
+    <%= f.label :quantity_before, class: 'rounded-sm color-black border-0 pl-2' %>
+    <%= f.hidden_field :quantity_before %>
+  </td>
+  <td class="rounded-sm text-light-black" colspan="2">
+    Expiry before:
+    <%= f.text_field :expiry_before, class: 'rounded-sm color-black border-0 pl-2' %>
+  </td>
+</tr>

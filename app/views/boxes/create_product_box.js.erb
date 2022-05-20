@@ -1,0 +1,17 @@
+form_errors = $("#form_errors");
+product_box_form = $("#product_box_form");
+form_errors.empty();
+product_box = <%= @product_box.to_json.html_safe %>
+product_box_form.trigger('reset');
+var htmlData= '<div class="alert alert-success alert-fade alert-dismissible text-center"> <button class="close" data-dismiss="alert" aria-label="close">x</button>Product Added Successfully </div>';
+form_errors.append(htmlData);
+form_errors.show();
+modal = product_box_form.parents('.modal')
+modal.scrollTop(0);
+
+// removing added product from products dropdown
+$("#product_box_form").find("#product_id option[value="+product_box.product_id+"]").remove();
+
+modal.on('hidden.bs.modal', function () {
+  location.reload();
+})

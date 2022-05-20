@@ -1,0 +1,59 @@
+<%= render 'shared/title_bar', heading: 'Adjustment' %>
+<div class="row py-2 border-bottom mx-0">
+  <div class="col-sm-4 pl-md-0 pl-sm-1 col-xl-4">
+    <%= label_tag :customer_id, 'Select Customer', class: 'text-light-black' %>
+    <%= select_tag "customer", options_from_collection_for_select(customers, "id", "name", @customer.id), {:id =>"selected_customer",:class => 'extended-form-control'} %>
+    <%= hidden_field_tag "customer_id", params[:customer_id], id:"customer_id" %>
+  </div>
+  <div class="col-sm-4 pl-md-0 pl-sm-1 col-xl-4">
+    <%= label_tag :box_id, 'Select Box', class: 'text-light-black' %>
+    <%= select_tag "box", options_from_collection_for_select(customer_boxes_list(@customer), "id", "code", current_box), {:id =>"selected_box",:class => 'extended-form-control',:prompt => "All"} %>
+    <%= hidden_field_tag "box_id", params[:box_id], id:"box_id" %>
+  </div>
+  <div class="col-sm-4 pl-md-0 pl-sm-1 col-xl-4">
+    <%= label_tag :product_id, 'Select Product', class: 'text-light-black' %>
+    <%= select_tag "product", options_from_collection_for_select(customer_products(@box), "id", "name", current_product), {:id =>"selected_product",:class => 'extended-form-control',:prompt => "All"} %>
+    <%= hidden_field_tag "product_id", params[:product_id], id: "product_id" %>
+  </div>
+</div>
+<div class="table-responsive col-12 text-nowrap px-sm-0 pb-3 border-bottom">
+  <table class="table table-borderless text-light-black w-100" id="adjustments_table">
+    <thead>
+    <tr>
+      <th>Adjustment #</th>
+      <th class="color-black"></th>
+      <th class="color-black">Product</th>
+      <th class="color-black">Box</th>
+      <th class="color-black">Added by</th>
+      <th class="color-black">Exp Before</th>
+      <th class="color-black">Exp After</th>
+      <th class="color-black">Qty Before</th>
+      <th class="color-black">Qty After</th>
+      <th class="color-black">Threshold Before</th>
+      <th class="color-black">Threshold After</th>
+      <th class="color-black">Notes</th>
+    </tr>
+    </thead>
+    <tbody class="bg-white rounded">
+    <% @adjustments.each do |adjustment| %>
+      <tr class="cursor-pointer">
+        <td class="border-bottom rounded-sm text-light-black"><%= adjustment.id %></td>
+        <td class="border-bottom rounded-sm text-light-black product_image">
+          <%= image_tag adjustment.product.photo_src %>
+        </td>
+        <td class="border-bottom rounded-sm text-light-black"><%= adjustment.product.name %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= adjustment.box.code %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= adjustment.created_by.name %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= date(adjustment.expiry_before) %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= date(adjustment.expiry_after) %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= adjustment.quantity_before %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= adjustment.quantity_after %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= adjustment.threshold_before %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= adjustment.threshold_after %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= adjustment.notes %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<br>

@@ -1,0 +1,25 @@
+<tr class="cursor-pointer">
+  <td class="rounded-sm text-light-black product_incidents_list" id="product_picture"></td>
+  <td class="rounded-sm text-light-black" id="product_name"></td>
+  <td class="rounded-sm text-light-black pt-1">
+    <div class="product_count_wrapper">
+      <div class="d-block">
+        <span class="minus btn py-2 px-3 w-auto"><i class="fas fa-minus small"></i></span>
+        <%= f.number_field :quantity, class: 'extended-form-control required product_count d-inline-block', value: 1, required: true, min: 1%>
+        <span class="plus btn py-2 px-3 w-auto"><i class="fas fa-plus small"></i></span>
+      </div>
+    </div>
+  </td>
+  <td class="rounded-sm text-light-black">
+    <%= f.hidden_field :_destroy %>
+    <%= link_to '#', class: 'remove_record pull-right' do %>
+      <div class="border-bottom rounded-sm custom-delete-icon text-center">
+        <i class="fas fa-trash mx-1"></i>
+      </div>
+    <% end %>
+    <%= f.hidden_field :product_id %>
+    <%= f.hidden_field :box_id %>
+  </td>
+<!--  <td>-->
+<!--  </td>-->
+</tr>

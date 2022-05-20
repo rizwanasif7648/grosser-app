@@ -1,0 +1,77 @@
+<div class="d-sm-flex align-items-center justify-content-between pb-3 border-bottom">
+  <a href="<%= root_path %>" class="image-btn">
+    <%= image_tag 'back_button', class: 'img-fluid' %>
+  </a>
+</div>
+<%= form_for(@user, url: update_profile_users_url, html: { method: :put, id: 'edit_profile_form', class: 'p-4 bg-white my-3 rounded-sm' }) do |form| %>
+  <%= render "shared/resource_errors", resource: @user %>
+  <div class="p-4 bg-white my-3 rounded-sm">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="row">
+          <h1 class="h4 text-light-black font-weight-bold mb-3">User Profile</h1>
+          <%= form.button 'Edit', type: 'submit', class: 'btn extended-btn btn-danger px-2 float-right ml-auto' do %>
+            Submit
+          <% end %>
+        </div>
+        <div class="row">
+          <div class="col-sm-3 py-2 bordered-img text-center user_profile">
+            <i class="icon-photo text-danger cursor-pointer profile-picture-trigger bg-white float-right mb-1"></i>
+            <%= image_tag @user.profile_picture_src, class: 'img-fluid bg-white', id: 'user_image' %>
+            <%= form.file_field :profile_picture, class: 'd-none', value: @user.profile_picture, required: !form.object.persisted?, accept: 'image/*' %>
+          </div>
+          <div class="col-sm-9 py-2">
+            <div class="row my-1 py-1">
+              <div class="col-sm-3 pl-sm-4">
+                <label for="name" class="d-inline-block text-danger roboto-medium font-md mb-0">Name&nbsp;:</label>
+              </div>
+              <div class="col-sm-9">
+                <%= form.text_field :name, class: 'extended-form-control required', placeholder: 'Enter name', required: true %>
+              </div>
+            </div>
+            <div class="row my-1 py-1">
+              <div class="col-sm-3 pl-sm-4">
+                <label for="email" class="d-inline-block text-danger roboto-medium font-md mb-0">Email&nbsp;:</label>
+              </div>
+              <div class="col-sm-9">
+                <%= form.email_field :email, class: 'extended-form-control required', placeholder: 'Enter email', required: true, disabled: @user.persisted? %>
+              </div>
+            </div>
+            <div class="row my-1 py-1">
+              <div class="col-sm-3 pl-sm-4">
+                <label for="customer" class="d-inline-block text-danger roboto-medium font-md mb-0">Customer&nbsp;:</label>
+              </div>
+              <div class="col-sm-9">
+                <%= form.select :customer_id, options_from_collection_for_select(customers, "id", "name", @user.customer_id), {:prompt => "Select Customer"}, required: true, class: 'extended-form-control required', disabled: @user.persisted? %>
+              </div>
+            </div>
+            <div class="row my-1 py-1">
+              <div class="col-sm-3 pl-sm-4">
+                <label for="phone" class="d-inline-block text-danger roboto-medium font-md mb-0">Phone&nbsp;:</label>
+              </div>
+              <div class="col-sm-9">
+                <%= form.text_field :phone, class: 'extended-form-control required', placeholder: 'Enter contact number', required: true %>
+              </div>
+            </div>
+            <div class="row my-1 py-1">
+              <div class="col-sm-3 pl-sm-4">
+                <label for="role" class="d-inline-block text-danger roboto-medium font-md mb-0">Role&nbsp;:</label>
+              </div>
+              <div class="col-sm-9">
+                <%= form.text_field :role_id, class: 'extended-form-control required', value: @user.role_title, placeholder: 'Enter Role', required: true, disabled: @user.persisted? %>
+              </div>
+            </div>
+            <div class="row my-1 py-1">
+              <div class="col-sm-3 pl-sm-4">
+                <label for="type" class="d-inline-block text-danger roboto-medium font-md mb-0">User type&nbsp;:</label>
+              </div>
+              <div class="col-sm-9">
+                <%= form.text_field :type, class: 'extended-form-control required', placeholder: 'Enter User Type', required: true, disabled: @user.persisted? %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,112 @@
+<div class="d-sm-flex align-items-center justify-content-between pb-3 border-bottom">
+  <a href="<%= products_path %>" class="image-btn">
+    <%= image_tag 'back_button', class: 'img-fluid' %>
+  </a>
+</div>
+<div class="px-4 pt-4 pb-0 mt-3 mb-5 bg-white rounded-sm">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-4 py-2 bordered-img text-center">
+          <%= image_tag @product.photo_src, class: 'img-fluid bg-white' %>
+        </div>
+        <div class="col-sm-8 py-2"></div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-sm-4 pl-sm-0">
+          <div class="row my-1 py-1">
+            <div class="col-sm-6">
+              <label for="code" class="d-inline-block text-danger roboto-medium mb-0">Product Code&nbsp;:</label>
+            </div>
+            <div class="col-sm-6">
+              <label for="code_data" class="text-light-black mb-0"><%= @product.code%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="row my-1 py-1">
+            <div class="col-sm-6">
+              <label for="name" class="d-inline-block text-danger roboto-medium mb-0">Product Name&nbsp;:</label>
+            </div>
+            <div class="col-sm-6">
+              <label for="name_data" class="text-light-black mb-0"><%= @product.name%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12 pl-sm-0">
+          <div class="row my-1 py-1">
+            <div class="col-sm-12">
+              <label for="description" class="d-inline-block text-danger roboto-medium mb-0">Description&nbsp;:</label>
+            </div>
+            <div class="col-sm-12">
+              <label for="description_data" class="text-light-black mb-0"><%= @product.description%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 px-sm-0">
+          <div class="row my-1 py-1">
+            <div class="col-sm-6">
+              <label for="alias" class="d-inline-block text-danger roboto-medium mb-0">Alias:</label>
+            </div>
+            <div class="col-sm-6">
+              <label for="alias_data" class="text-light-black mb-0"><%= @product.name%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 px-sm-0">
+          <div class="row my-1 py-1">
+            <div class="col-sm-6">
+              <label for="brand" class="d-inline-block text-danger roboto-medium mb-0">Brand:</label>
+            </div>
+            <div class="col-sm-6">
+              <label for="brand_data" class="text-light-black mb-0"><%= @product.brand.titleize %></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 px-sm-0">
+          <div class="row my-1 py-1">
+            <div class="col-sm-6">
+              <label for="group" class="d-inline-block text-danger roboto-medium mb-0">Product Group:</label>
+            </div>
+            <div class="col-sm-6">
+              <label for="group_data" class="text-light-black mb-0"><%= @product.category.titleize %></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 px-sm-0">
+          <div class="row my-1 py-1">
+            <div class="col-sm-6">
+              <label for="type" class="d-inline-block text-danger roboto-medium mb-0">Asset Group:</label>
+            </div>
+            <div class="col-sm-6">
+              <label for="type_data" class="text-light-black mb-0"><%= @product.asset_type.titleize %></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 my-5"></div>
+        <div class="col-sm-12 pl-sm-0 border-top">
+          <div class="row my-1 py-1">
+            <div class="col-sm-6">
+              <label for="status" class="d-inline-block text-dark roboto-medium mb-0">Status&nbsp;:</label>
+              <label for="status_data" class="text-danger mb-0 text-capitalize pl-sm-5"><%= @product.status%></label>
+            </div>
+            <div class="col-sm-6">
+              <label for="created" class="d-inline-block text-dark roboto-medium mb-0">Created&nbsp;:</label>
+              <label for="created_data" class="text-danger mb-0 text-capitalize pl-sm-5"><%= @product.created_at%></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>

@@ -1,0 +1,1 @@
+ERROR_MESSAGE = 'So you cannot login kindly contact 3w healthcare admin for further details.'

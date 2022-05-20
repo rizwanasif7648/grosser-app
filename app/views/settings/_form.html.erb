@@ -1,0 +1,30 @@
+<div class="row py-2 border-bottom mx-0">
+  <div class="col-12 bg-white rounded">
+    <%= form_for(@user, url: settings_path, html: { method: :post, class: 'p-sm-4 bg-white my-3 rounded-sm',  id: 'settings_form'}) do |f| %>
+      <% @user.user_settings.group_by {|setting| setting.notification_type}.each do |type, settings_group| %>
+        <h5>
+          <i class="fas fa-circle small text-danger mx-2"></i>
+          <small class="text-dark-50 text-capitalize roboto-medium"><%= type %> Notifications</small>
+        </h5>
+        <div class="row pl-5 pb-4">
+          <%= f.fields_for :user_settings, settings_group.sort_by{|o| o.id} do |obj| %>
+            <div class="col-12 my-1">
+              <div class="custom-control custom-checkbox ">
+                <%= obj.check_box :flag, class: 'custom-control-input', id: "create_"+obj.object.id.to_s%>
+                <label for="create_<%= obj.object.id %>" class="custom-control-label pl-3 text-dark-50 d-inline"><%= snake_case_to_normal_case(obj.object.notification)%></label>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="row">
+        <div class="extended-form-group col-sm-8 col-md-6 col-lg-5 pl-sm-5 mb-0 mt-2 align-items-lg-end ">
+          <div class="actions text-center text-right-left">
+            <%= f.submit 'Save', class: 'btn extended-btn btn-danger col-5 my-2 font-weight-bold float-left' %>
+            <%= link_to 'Cancel', root_path, class: 'btn extended-btn btn-default col-5 offset-sm-1 offset-2 my-2 grey-bg-white-text font-weight-bold float-left text-decoration-none'%>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<%= form_with(model: user, local: true, class: 'p-4 bg-white my-3 rounded-sm', id: 'user_form') do |form| %>
+  <%= render "shared/resource_errors", resource: user %>
+  <div class="row">
+    <div class="col-sm-10">
+      <div class="row">
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :name, class: 'text-dark required'  %>
+          <%= form.text_field :name, class: 'extended-form-control required', placeholder: 'Enter name', required: true, disabled: user.persisted?, maxlength: 70 %>
+        </div>
+        
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :email, class: 'text-dark required'  %>
+          <%= form.email_field :email, class: 'extended-form-control required', placeholder: 'Enter email', required: true, disabled: user.persisted?, maxlength: 255 %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :customer_id,'Customer',  class: 'text-dark required'  %>
+          <%= form.select :customer_id, options_from_collection_for_select(customers, "id", "name", @user.customer_id), {:prompt => "Select Customer"}, required: true, class: 'extended-form-control required', disabled: user.persisted?%>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :phone,'Contact Number', class: 'text-dark required'  %>
+          <%= form.text_field :phone, class: 'extended-form-control required', placeholder: 'Enter contact number', required: true, maxlength: 15 %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :role_id,'Role',  class: 'text-dark required'  %>
+          <%= form.select(:role_id, [], {:prompt => "Select Role"}, required: true, class: 'extended-form-control required') %>
+          <%= form.hidden_field :role_id, id: 'role', name: 'role' %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <label for="user_type" class="text-dark required">User Type</label>
+          <div data-toggle="buttons" class="week_days_container row mx-0">
+            <div class="col-6 pl-0">
+              <label class="btn btn-user-type rounded-sm btn-block <%= form.object.is_web_user == true ? 'active' : '' %>">
+                <%= form.radio_button :is_web_user, true, checked: form.object.is_web_user , class: 'd-none'%>
+                <i class="fas fa-globe mx-1" aria-hidden="true"></i>
+                <span class="d-none d-lg-inline-block">Web</span>
+              </label>
+            </div>
+            <div class="col-6 pr-0">
+              <label class="btn btn-user-type rounded-sm btn-block <%= form.object.is_web_user == false ? 'active' : '' %>">
+                <%= form.radio_button :is_web_user, false, class: 'd-none' %>
+                <i class="fa fa-mobile mx-1" aria-hidden="true"></i>
+                <span class="d-none d-lg-inline-block">Mobile</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :profile_picture, 'Profile Picture', class: 'text-dark'  %>
+          <div class="inner-addon right-addon form-group">
+            <i class="icon-photo text-danger cursor-pointer profile-picture-trigger bg-white"></i>
+            <%= text_field_tag '', '', :class => 'extended-form-control bg-white cursor-pointer profile-picture-trigger text-truncate', :id => 'picture_input', 'placeholder'=> "Select profile picture", readonly: true, value: profile_picture_identifier(user, form) %>
+            <%= form.file_field :profile_picture, class: 'd-none', value: user.profile_picture, accept: 'image/*' %>
+          </div>
+        </div>
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :status,'Status',  class: 'text-dark required' %>
+          <%= form.select(:status, User.status_options.map {|k, v| [k.humanize.capitalize, k]}, {:include_blank => 'Select status'}, {:required => true, class: 'extended-form-control'}) %>
+        </div>
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2 ">
+          <%= form.label :password, class: 'text-dark ' + (!form.object.persisted? ? 'required' : '') %>
+          <div class="inner-addon right-addon form-group">
+            <i toggle="#user_password" class="fa fa-eye-slash text-danger pointer toggle-password"></i>
+            <%= form.password_field :password, class: 'extended-form-control pointer ' + (!form.object.persisted? ? 'required' : '') , placeholder: 'Enter password', required: !form.object.persisted?, maxlength: 12 %>
+          </div>
+        </div>
+        <div class="extended-form-group col-md-12 col-sm-12 pl-sm-5 mb-0 mt-2">
+          <div class="actions text-center text-sm-left row mx-0">
+            <%= form.submit 'Submit', class: 'btn extended-btn btn-danger px-sm-4 px-lg-5 mb-2' %>
+            <%= link_to 'Cancel', users_path, class: 'btn extended-btn btn-default px-sm-4 px-lg-5 ml-2 ml-sm-4 cancel-btn mb-2'%>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+<% end %>

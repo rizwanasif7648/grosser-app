@@ -1,0 +1,109 @@
+<%= render 'shared/title_bar', heading: 'Incident History' %>
+<div class="row py-2 mx-0">
+  <div class="col-sm-4 pl-sm-1">
+    <%= label_tag :customer_id,'Select Customer', class: 'text-light-black' %>
+    <%= select_tag "customer",  options_from_collection_for_select(customers, "id", "name", @customer.id), {:id =>"selected_customer",:class => 'extended-form-control',:prompt => "Please Select a Customer"} %>
+    <%= hidden_field_tag "customer_id", params[:customer_id] ,id:"customer_id" %>
+  </div>
+  <div class="col-sm-5 pr-sm-0 offset-sm-3">
+    <label for="nil">&nbsp;</label>
+    <div class="row justify-content-end">
+      <div class="d-sm-inline-block col-sm-10 px-sm-3 pr-sm-0 my-2 my-sm-0">
+        <div class="input-group">
+          <input id="incidents_search_field" type="text" class="form-control bg-white border-0 small" placeholder="Search Incident History" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-danger" type="button">
+              <i class="fas fa-search fa-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2 my-2 my-sm-0 text-center filter-logbook d-none d-lg-block">
+        <a class="nav-link" href="#">
+          <%= image_tag 'filter_icon.png', class: 'img-fluid' %>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="border logbook-table bg-white my-3 mb-4">
+  <div class="col-sm-11 pl-sm-1 mx-auto pt-5 pb-5">
+    <div id="navbar-example">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link user_tab active rounded-none" data-toggle="tab" href="#history_tab" role="tab">History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link product_tab rounded-none" data-toggle="tab" href="#incident_request_tab" role="tab">Incident Request</a>
+        </li>
+      </ul>
+      <div class="tab-content border-left border-bottom border-right logbook-table">
+        <div class="tab-pane fade in active show" id="history_tab" name="history_tab" role="tabpanel">
+          <div class="bs-callout bs-callout-danger">
+            <div class="table-responsive col-12 text-nowrap px-sm-0 pb-3">
+              <table class="table table-borderless text-light-black w-100" id="incident_table">
+              <thead class="invisible">
+                <tr>
+                  <th></th>
+                  <th> </th>
+                  <th></th>
+                  <th> </th>
+                  <th> </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <% @incidents.each do |incident| %>
+                   <tr>
+                     <th class="date-style text-red border-bottom"> <%= incident.date_time.strftime("%B %d, %Y") %> </th>
+                     <th class="border-bottom"> Customer: <span class="text-red"> <%= incident.customer.name %> </span></th>
+                     <th class="border-bottom"> User: <span class="text-red"> <%= incident.user.name %> </span></th>
+                     <th class="border-bottom"> Box: <span class="text-red"> <%= incident.box.code %> </span></th>
+                     <th class="time-color border-bottom"> <%= incident.date_time.strftime("%H:%M %p") %> </th>
+                   </tr>
+                   <% incident.product_incidents.each do |product_incidents| %>
+                      <tr>
+                        <td class="text-light-black"><%= product_incidents.product.name %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-light-black text-center text-red w-10 border-left"><%= product_incidents.quantity %></td>
+                      </tr>
+                   <% end %>
+                   <tr>
+                     <td class="text-light-black border-bottom border-top">TOTAL COUNT </td>
+                     <td class="border-bottom border-top"></td>
+                     <td class="border-bottom border-top"></td>
+                     <td class="border-bottom border-top"></td>
+                     <td class="text-light-black text-center text-red w-10 border-bottom border-top"><%= incident.product_incidents.sum(:quantity) %></td>
+                   </tr>
+                <% end %>
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="incident_request_tab" name="incident_request_tab" role="tabpanel">
+          <div class="bs-callout bs-callout-danger">
+            <ul class="list-group">
+              <div class="row">
+                <% @incident_requests.each do |incident| %>   
+                    <div class="col-5 m-3 ml-5 pl-0">
+                      <h4 class="text-red mt-3  border-bottom border-muted">
+                        <%= date_format(incident.created_at) %>
+                        <b class="text-muted small"> <%= time_format(incident.created_at) %></b> 
+                      </h4>
+                      <%= image_tag "#{incident.image.url(:square)}", class: 'img-fluid border-left border-dark incident_request_img', 'data-id': "#{incident.image.url}" %>
+                    </div>
+                <% end %>
+                <div class="col-6">
+                  <div id="full_screen_image"></div>
+                </div>
+              </div> 
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="myOverlay"></div>
+</div>

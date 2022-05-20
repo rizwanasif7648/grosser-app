@@ -1,0 +1,28 @@
+<p>Dear <%= @user.name %>!</p>
+<p>Please note that an incident has been created against box <%= @box.code %> by <%= @reporter.name %> on <%= @incident.created_at %>.
+  <br/>The following products were consumed in the incident.</p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Product Name</th>
+      <th>Quantity Consumed</th>
+      <th>Quantity Left</th>
+      <th>Expiry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @products.each do |product_incident| %>
+      <tr>
+        <td><%= product_incident.product.name %></td>
+        <td><%= product_incident.quantity %></td>
+        <td><%= product_incident.balance %></td>
+        <td><%= product_incident.expiry %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+<br/>
+<p>DO NOT REPLY TO THIS EMAIL</p>
+

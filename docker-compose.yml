@@ -1,0 +1,48 @@
+version: '3'
+services:
+  db:
+    image: 'postgres:11.5-alpine'
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+    ports:
+      - 5432:5432
+    env_file:
+      - '.env'
+  redis:
+    image: 'bitnami/redis:5.0'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+  app:
+    build: .
+    command: /bin/sh -c "bin/puma -C config/puma.rb"
+    volumes:
+      - .:/app
+      - /app/tmp
+    env_file:
+      - '.env'
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+  sidekiq:
+    build:
+      context: .
+    depends_on:
+      - db
+      - redis
+    command: /bin/sh -c "bin/sidekiq -C config/sidekiq.yml"
+    volumes:
+      - .:/app
+    env_file:
+      - '.env'
+volumes:
+  postgres:
+  redis_data:
+    driver: local

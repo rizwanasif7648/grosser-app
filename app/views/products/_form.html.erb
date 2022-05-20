@@ -1,0 +1,78 @@
+<%= form_with(model: product, local: true, class: 'p-4 bg-white my-3 rounded-sm', id: 'product_form') do |form| %>
+  <%= render "shared/resource_errors", resource: product %>
+  <div class="row">
+    <div class="col-sm-10">
+      <div class="row">
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :code, 'Product Code', class: 'text-dark required'  %>
+          <%= form.text_field :code, class: 'extended-form-control required', placeholder: 'Enter product code here', required: true, disabled: product.persisted?, maxlength: 20 %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :name, 'Product Name', class: 'text-dark required'  %>
+          <%= form.text_field :name, class: 'extended-form-control required', placeholder: 'Enter product name here', required: true, maxlength: 50 %>
+        </div>
+
+        <div class="extended-form-group col-sm-12 pl-sm-5 mb-0 mt-2">
+          <%= form.label :description, 'Product Description', class: 'text-dark required'  %>
+          <%= form.text_field :description, class: 'extended-form-control required', placeholder: 'Enter product description here', required: true, maxlength: 70 %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :category,'Product Category',  class: 'text-dark required'  %>
+          <%= form.select :category, options_from_collection_for_select(categories, 'value', 'key', product.category), {:prompt => "Please Select"}, required: true, class: 'extended-form-control'%>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :brand,'Brand',  class: 'text-dark'  %>
+          <%= form.select :brand, options_from_collection_for_select(brands, 'value', 'key', product.brand), {:prompt => "Please Select"}, class: 'extended-form-control'%>
+        </div>
+
+        <div class="extended-form-status col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :status,'Status',  class: 'text-dark required'  %>
+          <%= form.select :status, Product.status_options.map {|k, v| [k.humanize.capitalize, k]}, {:include_blank => "Please Select"}, required: true, class: 'extended-form-control'%>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :asset_type,'Asset Type',  class: 'text-dark required'  %>
+          <%= form.select :asset_type, options_from_collection_for_select(asset_types, 'value', 'key', product.asset_type), {:prompt => "Please Select"}, required: true, class: 'extended-form-control'%>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <label for="user_type" class="text-dark required">Expirable</label>
+          <div data-toggle="buttons" class="row mx-0">
+            <div class="col-6 pl-0">
+              <label class="btn btn-user-type rounded-sm btn-block">
+                <%= form.radio_button :is_expirable, true, class: 'd-none'%>
+                <span>Yes</span>
+              </label>
+            </div>
+            <div class="col-6 pr-0">
+              <label class="btn btn-user-type rounded-sm btn-block">
+                <%= form.radio_button :is_expirable, false, class: 'd-none' %>
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :photo, 'Upload Photo', class: 'text-dark'  %>
+          <div class="inner-addon right-addon form-group">
+            <i class="icon-photo text-danger cursor-pointer product-picture-trigger"></i>
+            <%= text_field_tag :photo, '', :class => 'extended-form-control bg-white cursor-pointer cursor-pointer product-picture-trigger', :id => 'picture_input', 'placeholder'=> "Please Select Photo here", readonly: true, value: product_picture_identifier(product, form)  %>
+            <%= form.file_field :photo, class: 'd-none', value: product.photo, required: !form.object.persisted?, accept: 'image/*' %>
+          </div>
+        </div>
+
+        <div class="extended-form-group col-md-12 col-sm-6 pl-sm-5 mb-0 mt-2">
+          <div class="actions justify-content-center row mx-0">
+            <%= form.submit 'Submit', class: 'btn extended-btn btn-danger px-5 mb-2' %>
+            <%= link_to 'Cancel', products_path, class: 'btn extended-btn btn-default px-5 ml-sm-4 mb-2 cancel-btn'%>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+<% end %>

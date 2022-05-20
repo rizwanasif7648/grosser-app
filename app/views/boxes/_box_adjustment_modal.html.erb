@@ -1,0 +1,69 @@
+<div class="modal fade" id="adjustment-modal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="col-sm-12 col-sm-5 pl-sm-5 mb-0 mt-2">
+          <h5 class="text-dark text-center">Adjustment Of <%= @product.name %></h5>
+        </div>
+        <div class="modal-body">
+          <%= form_with url: "/adjustments", method: 'POST', remote: true, id: "box_adjustment_form" do |form| %>
+            <div class="row form-group">
+              <div id="form_errors" style="display:none;" class="col-sm-12 pl-sm-5"></div>
+              <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+                <% if @product_box.expiry %>
+                  <%= form.label :expiry_after, 'Expiry', class: 'text-dark required'  %>
+                  <%= form.date_field :expiry_after, class: 'extended-form-control required', value: @product_box.expiry.strftime('%Y-%m-%d'), required: true, min: Date.today %>
+               <% else %>
+                  <%= form.label :expiry_after, 'Expiry', class: 'text-dark'%>
+                  <%= form.date_field :expiry_after, class: 'extended-form-control', value: date(@product_box.expiry), disabled: true %>
+               <% end %>
+              </div>
+              <div class="col-sm-6">
+              </div>
+              <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+                <%= form.label :quantity_after, 'Quantity', class: 'text-dark required'  %>
+                <%= form.number_field :quantity_after, class: 'extended-form-control required', placeholder: 'Enter Quantity', required: true, min: 1, value: @product_box.remaining %>
+              </div>
+              <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+                <%= form.label :threshold_after, 'Threshold', class: 'text-dark required'  %>
+                <%= form.number_field :threshold_after, class: 'extended-form-control required', placeholder: 'Enter Threshold', required: true, min: 1, value: @product_box.threshold %>
+              </div>
+              <div class="col-sm-12 pl-xs-0 pl-lg-5 pl-md-5">
+                <div class="row ml-0 mr-0 adjustment-before-background">
+                <div class="col-sm-4 mb-0 mt-2">
+                  <%= form.label :quantity_before, "Quantity Before: #{@product_box.remaining}" , class: 'color-black', id: 'quantity_before_label' %>
+                  <%= form.hidden_field :quantity_before, value: @product_box.remaining %>
+                  <%= form.hidden_field :box_id, value: @box.id %>
+                  <%= form.hidden_field :product_id, value: @product.id %>
+                  <%= form.hidden_field :customer_id, value: @box.customer_id %>
+                  <%= form.hidden_field :created_by_id, value: current_user.id %>
+                  <%= form.hidden_field :product_name, value: @product.name %>
+                </div>
+                <div class="col-sm-4 mb-0 mt-2">
+                  <%= form.label :threshold_before, "Threshold Before: #{@product_box.threshold}", class: 'color-black', id: 'threshold_before_label' %>
+                  <%= form.hidden_field :threshold_before, value: @product_box.threshold %>
+                </div>
+                <div class="col-sm-4 mb-0 mt-2">
+                  <%= form.label :expiry_before, "Expiry Before: #{expiry(@product_box.expiry)}", class: 'color-black', id: 'expiry_before_label' %>
+                  <%= form.hidden_field :expiry_before, value: @product_box.expiry&.strftime("%d/%m/%Y") %>
+                </div>
+                </div>
+              </div>
+              <div class="extended-form-group col-sm-12 pl-sm-5 mb-0 mt-2">
+                <%= form.label :notes, 'Note', class: 'text-dark required'  %>
+                <%= form.text_area :notes, class: 'extended-form-control required', placeholder: 'Enter Note', required: true %>
+              </div>
+            </div>
+            <div class="form-group text-center">
+              <%= form.submit "OK", class: "btn btn-danger bg-red" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

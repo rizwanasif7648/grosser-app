@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>3W App</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <%= stylesheet_link_tag    'application', media: 'all'%>
+  <%= javascript_include_tag 'application' %>
+  <script src="https://kit.fontawesome.com/e2fa0f8671.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-gradient-light" id="<%= "#{params[:controller].gsub('/','_')}-#{params[:action]}" %>">
+  <div class="container">
+    <%= render 'shared/server_alerts' %>
+    <%= yield %>
+  </div>
+</body>
+
+</html>

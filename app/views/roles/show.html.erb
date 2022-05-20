@@ -1,0 +1,74 @@
+<%= form_with(model: @role, local: true, class: 'p-4 bg-white my-3 rounded-sm', id: 'role_form') do |form| %>
+  <%= render "shared/resource_errors", resource: @role %>
+  <div class="row">
+    <div class="extended-form-group col-sm-5 pl-sm-5 mb-0 mt-2">
+      <%= form.label :customer_id,'Customer', class: 'text-light-black'  %>
+      <%= form.select :customer_id, options_from_collection_for_select(customers, "id", "name", @role.customer_id), {:prompt => "Select Customer"}, class: 'extended-form-control required', :disabled => true%>
+    </div>
+
+    <div class="extended-form-group col-sm-5 pl-sm-5 mb-0 mt-2">
+      <%= form.label :title,'Title', class: 'text-light-black'  %>
+      <%= form.text_field :title, class: 'extended-form-control required', placeholder: 'Enter title', :disabled => true %>
+    </div>
+    <div class="col-sm-10">
+      <div class="row">
+        <div class="table-responsive pl-sm-5 col-12 text-nowrap">
+          <table class="table table-borderless text-light-black">
+            <thead>
+            <tr scope="row">
+              <th class="border-0 pl-sm-5">Module</th>
+              <th class="border-0 text-center">Create</th>
+              <th class="border-0 text-center">Read</th>
+              <th class="border-0 text-center">Update</th>
+              <th class="border-0 text-center">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%= form.fields_for :role_permissions do |role_permission_fields| %>
+              <tr scope="row">
+                <td class="pl-sm-4 h5 py-3 text-light-black bordered-shadow border rounded">
+                  <i class="<%= role_permission_fields.object.permission.icon %> mx-3 text-danger"></i>
+                  <%= role_permission_fields.object.permission.name%>
+                </td>
+                <td class="text-center py-3 bordered-shadow border rounded px-4">
+                  <div class="custom-control custom-checkbox ">
+                    <%= role_permission_fields.check_box :is_createable, class: 'custom-control-input', id: "create_"+role_permission_fields.object.permission.name, :disabled => true %>
+                    <label for="create_<%= role_permission_fields.object.permission.name %>" class="custom-control-label"></label>
+                  </div>
+                </td>
+                <td class="text-center py-3 bordered-shadow border rounded px-4">
+                  <div class="custom-control custom-checkbox ">
+                    <%= role_permission_fields.check_box :is_readable, class: 'custom-control-input', id: "read_"+role_permission_fields.object.permission.name, :disabled => true %>
+                    <label for="read_<%= role_permission_fields.object.permission.name %>" class="custom-control-label"></label>
+                  </div>
+                </td>
+                <td class="text-center py-3 bordered-shadow border rounded px-4">
+                  <div class="custom-control custom-checkbox ">
+                    <%= role_permission_fields.check_box :is_updateable, class: 'custom-control-input', id: "update_"+role_permission_fields.object.permission.name, :disabled => true %>
+                    <label for="update_<%= role_permission_fields.object.permission.name %>" class="custom-control-label"></label>
+                  </div>
+                </td>
+                <td class="text-center py-3 bordered-shadow border rounded px-4">
+                  <div class="custom-control custom-checkbox ">
+                    <%= role_permission_fields.check_box :is_deleteable, class: 'custom-control-input', id: "delete_"+role_permission_fields.object.permission.name, :disabled => true %>
+                    <label for="delete_<%= role_permission_fields.object.permission.name %>" class="custom-control-label"></label>
+                  </div>
+                </td>
+                <%= role_permission_fields.hidden_field :permission_id, :value => role_permission_fields.object.permission_id %>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="extended-form-group col-md-10 offset-md-2 offset-sm-6 col-sm-6 pl-sm-5 mb-0 mt-2">
+          <div class="actions text-center text-right-left float-right">
+            <%= link_to 'Edit', edit_role_path(@role), class: 'btn extended-btn btn-danger px-5 my-2 font-weight-bold' %>
+            <%= link_to 'Back', roles_path, class: 'btn extended-btn btn-default px-5 ml-sm-4 float-sm-right my-2 grey-bg-white-text font-weight-bold'%>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<% end %>

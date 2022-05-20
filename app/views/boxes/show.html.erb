@@ -1,0 +1,163 @@
+<%= form_with(model: @box, local: true, class: 'p-4 bg-white my-3 rounded-sm', id: 'box_form') do |form| %>
+  <%= render "shared/resource_errors", resource: @box %>
+  <div class="d-sm-flex align-items-center justify-content-between pb-3 border-bottom">
+    <a href="<%= boxes_path %>" class="image-btn">
+      <%= image_tag 'back_button', class: 'img-fluid' %>
+    </a>
+  </div>
+  <div class="row py-2 border-bottom mx-0">
+    <div class="col-12 col-lg-3 pl-lg-1 py-2">
+      <span class="text-dark">Box Code: <span class="text-red"><%= @box.code %></span></span>
+    </div>
+    <div class="col-12 col-lg-2 pl-lg-1 py-2">
+      <span class="text-dark">Type: <span class="text-red"> <%= @box.box_type %></span></span>
+    </div>
+    <div class="col-12 col-lg-3 pl-lg-1 py-2">
+      <span class="text-dark">Box Location: <span class="text-red"><%= @box.location.upcase %></span></span>
+    </div>
+    <div class="col-12 col-lg-3 my-2 my-lg-0 text-left">
+      <% if accessable?('Boxes', 'is_createable') %>
+        <%= link_to box_path(@box), remote: true do %>
+          <div class="btn btn-danger btn-md-block add_user_btn">
+            <small class="small">
+              Add User
+              <i class="fa fa-plus"></i>
+            </small>
+          </div>
+        <% end %>
+        <%= link_to fetch_box_box_path(@box), remote: true do %>
+          <div class="btn btn-danger btn-md-block add_product_btn d-none">
+            <small class="small">
+              Add Product
+              <i class="fa fa-plus"></i>
+            </small>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-sm-10  mt-md-2 pl-sm-1">
+      <div id="navbar-example">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+              <a class="nav-link user_tab active" data-tab="user_tab" data-toggle="tab" href="#users" role="tab">Users</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link product_tab" data-tab="product_tab" data-toggle="tab" href="#products" role="tab">Products</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link incident_tab" data-tab="incident_tab" data-toggle="tab" href="#incidents" role="tab">Incident History</a>
+          </li>
+        </ul>
+        <div class="tab-content mt-2">
+          <div class="tab-pane fade in active show" id="users" name="users" role="tabpanel">
+            <div class="bs-callout bs-callout-danger">
+              <ul class="list-group">
+                <li class="list-group-item text-red">User Names</li>
+                <% @box.users.each do |user| %>
+                  <li class="list-group-item text-dark">
+                    <span class="ml-1"> <%= user.name %> </span>
+                    <%= link_to user_box_archive_box_path(id: @box, user_id: user), 'data-method':"delete", class: "float-left float-sm-right" do %>
+                      <span class="float-right text-dark">Remove</span>
+                      <i class="small text-red fas fa-user-times mx-1"></i>
+                    <%end%>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="products" name="products" role="tabpanel">
+           <div class="bs-callout bs-callout-danger">
+              <div class="table-responsive col-12 text-nowrap px-sm-0 pb-3 border-bottom">
+                <% if @box.product_boxes.length.positive? %>
+                  <table class="table table-borderless text-light-black w-100" id="boxes_table">
+                    <thead>
+                      <tr class="text-red">
+                        <th></th>
+                        <th>Product Name</th>
+                        <th>Code</th>
+                        <th>Remaining Quantity</th>
+                        <th>Added on</th>
+                        <th>Expiry Date</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody class="bg-white rounded">
+                      <%= form.fields_for :product_boxes do |product_box_fields| %>
+                        <tr class="cursor-pointer" href="<%= box_path(@box) %>">
+                          <td class="border-bottom rounded-sm text-light-black"><%= image_tag product_box_fields.object.product.photo_src, size: '50'%></td>
+                          <td class="border-bottom rounded-sm text-light-black"><%= product_box_fields.object.product.name %></td>
+                          <td class="border-bottom rounded-sm text-light-black"><%= product_box_fields.object.product.code %></td>
+                          <td class="border-bottom rounded-sm text-light-black text-center"><%= product_box_fields.object.remaining %></td>
+                          <td class="border-bottom rounded-sm text-light-black"><%= date(product_box_fields.object.created_at) %></td>
+                          <td class="border-bottom rounded-sm text-light-black"><%= date(product_box_fields.object.expiry) %></td>
+                          <td class="border-bottom rounded-sm">
+                            <%= link_to box_adjustment_box_path(@box, product_id: product_box_fields.object.product), remote: true, class: 'custom-edit-icon pl-1' do %>
+                              <small class="small">
+                                <i class="fas fa-pencil-alt"></i>
+                              </small>
+                            <% end %>
+                            <a class="custom-delete-icon" href="<%= product_box_archive_box_path(id: @box, product_id: product_box_fields.object.product) %>" data-method="delete" data-confirm="Are you sure?"><i class="small fas fa-trash mx-1"></i></a>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="incidents" name="incidents" role="tabpanel">
+           <div class="bs-callout bs-callout-danger">
+              <div class="table-responsive col-12 text-nowrap px-sm-0 pb-3 border-bottom">
+                <table class="table table-borderless text-light-black w-100" id="incident_table">
+                  <thead class="invisible">
+                    <tr>
+                      <th></th>
+                      <th> </th>
+                      <th></th>
+                      <th> </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white">
+                    <% box_incidents(@box).each do |incident| %>
+                       <tr>
+                         <th class="date-style text-red border-bottom"> <%= incident.date_time.strftime("%B %d, %Y") %> </th>
+                         <th></th>
+                         <th></th>
+                         <th class="time-color border-bottom"> <%= incident.date_time.strftime("%H:%M %p") %> </th>
+                       </tr>
+                       <% incident.product_incidents.each do |product_incidents| %>
+                          <tr>
+                            <td class="text-light-black"><%= product_incidents.product.name %></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-light-black text-center text-red w-10 border-left"><%= product_incidents.quantity %></td>
+                          </tr>
+                       <% end %>
+                       <tr>
+                         <td class="text-light-black border-bottom border-top">TOTAL COUNT </td>
+                         <td class="border-bottom border-top"></td>
+                         <td class="border-bottom border-top"></td>
+                         <td class="text-light-black text-center text-red w-10 border-bottom border-top"><%= incident.product_incidents.sum(:quantity) %></td>
+                       </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if @box.qrcode_url.url %>
+      <div class="col-sm-2 my-2 my-sm-0">
+        <div class="col-sm-12 float-right text-right">
+          <div class="text-dark"><%= image_tag @box.qrcode_url.url %></div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<div id='box-content'></div>
+<div id='box-adjustment'></div>

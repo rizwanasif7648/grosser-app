@@ -1,0 +1,13 @@
+var errors = <%= @errors_messages.to_json.html_safe %>;
+$("#form_errors").empty();
+
+var htmlData= '<div class="alert alert-danger alert-fade alert-dismissible text-center"> <button class="close" data-dismiss="alert" aria-label="close">x</button> <ul class="mb-0">';
+for(var i = 0; i < errors.length; i++) {
+    htmlData+= '<li>' + errors[i]+' </li>';
+}
+htmlData += '</ul></div>'
+$("#form_errors").append(htmlData);
+$("#form_errors").show();
+
+modal = $("#product_box_form").parents('.modal')
+modal.scrollTop(0);

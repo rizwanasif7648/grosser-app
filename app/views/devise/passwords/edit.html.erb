@@ -1,0 +1,69 @@
+<!-- Outer Row -->
+<div class="row justify-content-center">
+
+  <div class="col-xl-11 col-lg-12 col-md-10">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-6 pb-5 pb-sm-2">
+            <div class="media align-middle px-5 pt-5 mx-sm-5">
+              <div class="media-body text-center">
+                <%= image_tag 'lock_image', class: 'img-fluid text-center w-25 mt-5 p-3' %>
+              </div>
+            </div>
+            <div class="px-3 mx-sm-5 mb-3">
+              <div class="text-center mt-3">
+                <h1 class="h3 text-dark-50 mb-2 pb-2 d-inline-block font-weight-bold">Reset Password</h1>
+              </div>
+            </div>
+            <div class="px-5 mx-sm-5 mb-5 pb-5">
+              <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {class: 'user', id: 'password_form', method: :put }) do |f| %>
+                <%= render "shared/resource_errors", resource: resource %>
+                <%= f.hidden_field :reset_password_token %>
+                <div class="form-group my-4">
+                  <%= f.label :password, 'Password', class: 'text-dark' %>
+                  <div class="inner-addon left-addon form-group">
+                    <small><i class="icon-lock"></i></small>
+                    <%= f.password_field :password, required: true, autofocus: true, autocomplete: 'false', class: 'form-control form-control-user', placeholder: 'Enter password'%>
+                  </div>
+                </div>
+                <div class="form-group my-4">
+                  <%= f.label :password_confirmation, 'Confirm Password ', class: 'text-dark' %>
+                  <div class="inner-addon left-addon form-group">
+                    <small><i class="icon-lock"></i></small>
+                    <%= f.password_field :password_confirmation, required: true, autofocus: true, autocomplete: 'false', class: 'form-control form-control-user', placeholder: 'Enter confirm password'%>
+                  </div>
+                </div>
+                <div class="actions">
+                  <%= f.submit "Reset Password", class: 'btn btn-primary btn-user btn-block my-4' %>
+                </div>
+
+              <% end %>
+            </div>
+          </div>
+
+          <div class="col-lg-6 d-none d-lg-block bg-login-image">
+            <div class="media align-middle p-5 mx-sm-5">
+              <div class="media-body">
+                <%= image_tag 'logo_dark', class: 'img-fluid align-self-start' %>
+              </div>
+            </div>
+            <div class="media align-bottom p-5 mx-sm-5"></div>
+            <div class="media align-bottom p-5 mx-sm-5"></div>
+            <div class="media align-bottom p-5 mx-sm-5">
+
+              <div class="media-body">
+                <div class="border_bottom_2 col-6 mx-auto my-2"></div>
+                <p class="col-10 mx-auto text-dark text-center">We believe in keeping you
+                  Safe for life</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

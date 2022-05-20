@@ -1,0 +1,100 @@
+<%= render 'shared/title_bar', heading: 'Products' %>
+<div class="row py-2 border-bottom mx-0">
+  <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 pl-sm-1">
+    <h5 class="h5 font-weight-light text-light-black my-2" id="products_info"></h5>
+  </div>
+  <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 offset-md-0 pr-sm-0 mt-2 mt-lg-0">
+    <div class="row text-right">
+      <!-- Topbar Search -->
+      <div class="d-sm-inline-block col-sm-5 col-md-5 col-lg-5 col-xl-5 offset-xl-1 my-2 my-sm-0 pl-sm-0 pl-md-0">
+        <div class="input-group">
+          <input id="products_search_field" type="text" class="form-control bg-white border-0 small" placeholder="Search product" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-danger" type="button">
+              <i class="fas fa-search fa-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3 my-2 my-sm-0 text-sm-right text-left">
+          <a href="#" class="btn btn-danger btn-block generate-sticker-btn">
+            <small class="small">
+              Generate Stickers
+            </small>
+          </a>
+      </div>
+      <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 my-2 my-sm-0 text-sm-right text-right">
+        <% if accessable?('Products', 'is_createable') %>
+          <a href="<%= new_product_path %>" class="btn btn-danger btn-block">
+            <small class="small">
+              Add New
+              <i class="fa fa-plus"></i>
+            </small>
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="table-responsive col-12 text-nowrap px-sm-0 pb-3 border-bottom">
+  <% is_permissible = permissible?('Products') %>
+  <table class="table table-borderless text-light-black w-100" id="products_table">
+    <thead>
+    <tr>
+      <th class="no_sorting">
+      </th>
+      <th>Product Code</th>
+      <th>Product Name</th>
+      <th>Asset Type</th>
+      <th>Product Category</th>
+      <th>Status</th>
+      <% if is_permissible %><th class="invisible"></th><% end %>
+    </tr>
+    </thead>
+
+    <tbody class="bg-white rounded">
+    <% @products.each_with_index do |product, index| %>
+      <tr class="cursor-pointer" href="<%= product_path(product) %>">
+        <td class="radio-check border-bottom custom-control custom-checkbox d-table-cell sorting_1 px-3">
+          <input type="checkbox" class="custom-control-input" id="customCheck<%= product.id %>" name="qrcode_url" value="<%= product.qrcode_url.url %>">
+          <label class="custom-control-label" for="customCheck<%= product.id %>"></label>
+        </td>
+        <td class="border-bottom rounded-sm text-light-black text-capitalize"><%= product.code %></td>
+        <td class="border-bottom rounded-sm text-light-black text-capitalize"><%= product.name %></td>
+        <td class="border-bottom rounded-sm text-light-black text-capitalize"><%= product.asset_type %></td>
+        <td class="border-bottom rounded-sm text-light-black text-capitalize"><%= product.category %></td>
+        <td class="border-bottom rounded-sm text-light-black text-capitalize"><%= product.status.titleize %></td>
+        <% if is_permissible %>
+          <td class="border-bottom rounded-sm text-light-black text-capitalize">
+            <a disabled="false" class="btn btn-danger btn-sm" href="#" id="actions_dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Actions
+              <i class="fas fa-caret-down"></i>
+            </a>
+            <div class="dropdown-menu align-content-center shadow " aria-labelledby="actions_dropdown">
+              <% if accessable?('Products', 'is_readable') %>
+                <a class="dropdown-item px-2" href="<%= product_path(product) %>" >
+                  <i class="small fas fa-eye mx-1"></i>
+                  View
+                </a>
+              <% end %>
+              <% if accessable?('Products', 'is_updateable') %>
+                <a class="dropdown-item px-2" href="<%= edit_product_path(product) %>">
+                  <i class="small fas fa-pencil-alt mx-1"></i>
+                  Edit
+                </a>
+              <% end %>
+              <% if accessable?('Products', 'is_deleteable') %>
+                <a class="dropdown-item px-2" href="<%= product_path(product) %>" data-method="delete" data-confirm="Are you sure?">
+                  <i class="small fas fa-trash mx-1"></i>
+                  Delete
+                </a>
+              <% end %>
+            </div>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<br>

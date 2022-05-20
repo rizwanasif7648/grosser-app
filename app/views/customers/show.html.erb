@@ -1,0 +1,102 @@
+<div class="d-sm-flex align-items-center justify-content-between pb-3 border-bottom">
+  <a href="<%= customers_path %>" class="image-btn">
+    <%= image_tag 'back_button', class: 'img-fluid' %>
+  </a>
+</div>
+<div class="p-3 bg-white my-3 rounded-sm">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 class="h4 mb-0 text-light-black font-weight-bold mb-3">Customers Profile</h1>
+      <div class="row">
+        <div class="col-lg-5 py-2">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="name" class="d-inline-block text-danger roboto-medium font-md mb-0">Name&nbsp;:</label>
+            </div>
+            <div class="col-sm-8">
+              <label for="name_data" class="text-light-black font-md mb-0 w-250 text-break border-left-danger pl-3"><%= @customer.name%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 py-2">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="email" class="d-inline-block text-danger roboto-medium font-md mb-0">Email&nbsp;:</label>
+            </div>
+            <div class="col-sm-8">
+              <label for="email_data" class="text-light-black font-md mb-0 w-250 text-break border-left-danger pl-3"><%= @customer.email%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 py-2">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="url" class="d-inline-block text-danger roboto-medium font-md mb-0">URL&nbsp;:</label>
+            </div>
+            <div class="col-sm-8">
+              <label for="url_data" class="text-light-black font-md mb-0 w-250 text-break border-left-danger pl-3"><%= @customer.url%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 py-2">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="phone" class="d-inline-block text-danger roboto-medium font-md mb-0">Phone&nbsp;:</label>
+            </div>
+            <div class="col-sm-8">
+              <label for="phone_data" class="text-light-black font-md mb-0 w-250 text-break border-left-danger pl-3"><%= @customer.phone%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 py-2">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="postcode" class="d-inline-block text-danger roboto-medium font-md mb-0">Postcode&nbsp;:</label>
+            </div>
+            <div class="col-sm-8">
+              <label for="postcode_data" class="text-light-black font-md mb-0 w-250 text-break border-left-danger pl-3"><%= @customer.postcode%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 py-2">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="industry" class="d-inline-block text-danger roboto-medium font-md mb-0">Industry&nbsp;:</label>
+            </div>
+            <div class="col-sm-8">
+              <label for="industry_data" class="text-light-black font-md mb-0 w-250 text-break border-left-danger pl-3"><%= @customer.industry%></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 py-2">
+          <div class="row">
+            <div class="col-sm-4 ">
+              <label for="street_address" class="d-inline-block text-danger roboto-medium font-md mb-0 ">Address&nbsp;:</label>
+            </div>
+            <div class="col-sm-8">
+              <label for="street_address_data" class="text-light-black font-md mb-0 w-250 text-break border-left-danger pl-3"><%= @customer.street_address%></label>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 offset-sm-1 py-2"></div>
+        <div class="col-lg-5 py-2">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="status" class="d-inline-block text-danger roboto-medium font-md mb-0">Status&nbsp;:</label>
+            </div>
+            <div class="col-sm-8">
+              <label for="status_data" class="text-light-black font-md mb-0 w-250 text-break border-left-danger pl-3"><%= @customer.status.capitalize %></label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<!-- Outer Row -->
+<div class="row justify-content-center">
+
+  <div class="col-xl-11 col-lg-12 col-md-10">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-6 d-none d-lg-block bg-login-image">
+            <div class="media align-middle p-5 mx-sm-5">
+              <div class="media-body">
+                <%= image_tag 'logo_dark', class: 'img-fluid align-self-start' %>
+              </div>
+            </div>
+            <div class="media align-bottom p-5 mx-sm-5"></div>
+            <div class="media align-bottom p-5 mx-sm-5"></div>
+            <div class="media align-bottom p-5 mx-sm-5">
+
+              <div class="media-body">
+                <div class="border_bottom_2 col-6 mx-auto my-2"></div>
+                <p class="col-10 mx-auto text-dark text-center">We believe in keeping you
+                  Safe for life</p>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-6">
+            <div class="p-5 mx-sm-5 my-5">
+              <div class="text-left mt-5">
+                <h1 class="h2 text-dark mb-2 pb-2 d-inline-block border_bottom_2 font-weight-bold">Login</h1>
+              </div>
+              <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'user', id: 'user'}) do |f| %>
+                <%= render "shared/resource_errors", resource: resource %>
+                <div class="form-group my-4">
+                  <%= f.label :email, 'Email', class: 'text-dark' %>
+                  <div class="inner-addon left-addon form-group">
+                    <small><i class="icon-envelope"></i></small>
+                    <%= f.email_field :email, autofocus: true, autocomplete: 'false', class: 'form-control form-control-user', placeholder: 'Enter email', maxlength: 255 %>
+                  </div>
+                </div>
+
+                <div class="form-group my-4">
+                  <%= f.label :password, 'Password', class: 'text-dark' %>
+                  <div class="inner-addon left-addon form-group">
+                    <i class="icon-lock"></i>
+                    <%= f.password_field :password, autocomplete: "false", class: 'form-control form-control-user', placeholder: 'Enter password', maxlength: 12 %>
+                  </div>
+                </div>
+                <% if devise_mapping.rememberable? %>
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox small px-2">
+                      <%= f.check_box :remember_me, class: 'custom-control-input', id: 'remember_me' %>
+                      <%= f.label :remember_me, class: 'custom-control-label pl-3', for: 'remember_me' %>
+                    </div>
+                  </div>
+                <% end %>
+
+                <div class="actions">
+                  <%= f.submit "Login", class: 'btn btn-primary btn-user btn-block my-4' %>
+                </div>
+                <div class="text-center my-4">
+                  <small>
+                    Forgot Password? <a class="text-danger" href="<%= new_password_path(resource) %>">Reset</a>
+                  </small>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

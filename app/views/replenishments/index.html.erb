@@ -1,0 +1,64 @@
+<%= render 'shared/title_bar', heading: 'Requisition' %>
+<div class="row py-2 border-bottom mx-0">
+  <div class="col-sm-4 pl-md-0 pl-sm-1 col-xl-4">
+    <%= label_tag :customer_id,'Select Customer', class: 'text-light-black' %>
+    <%= select_tag "customer",  options_from_collection_for_select(customers, "id", "name", @customer.id), {:id =>"selected_customer",:class => 'extended-form-control',:prompt => "Please Select a Customer"} %>
+    <%= hidden_field_tag "customer_id", params[:customer_id] ,id:"customer_id" %>
+  </div>
+  <div class="col-sm-8 pr-sm-0 col-xl-8 offset-xl-0 offset-md-0">
+    <label for="nil" class="d-none d-sm-block">&nbsp;</label>
+    <div class="row">
+      <div class="d-sm-inline-block col-sm-7 col-md-5 offset-md-2 col-lg-4 offset-lg-4 col-xl-4 offset-xl-5 px-md-0 pr-md-0 px-sm-3 pr-sm-0 my-2 my-sm-0">
+        <% if @customer %>
+          <div class="input-group">
+            <input id="replenishments_search_field" type="text" class="form-control bg-white border-0 small" placeholder="Search Requisitions" aria-label="Search">
+            <div class="input-group-append">
+              <button class="btn btn-danger" type="button">
+                <i class="fas fa-search fa-sm"></i>
+              </button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-sm-5 col-md-5 col-lg-4 col-xl-3 my-2 my-sm-0 text-center-sm">
+        <% if accessable?('Requisition', 'is_createable') %>
+          <a href="<%= new_replenishment_path %>" class="btn btn-danger btn-block">
+            <small class="small">
+              Add New
+              <i class="fa fa-plus"></i>
+            </small>
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="table-responsive col-12 text-nowrap px-sm-0 pb-3 border-bottom">
+  <table class="table table-borderless text-light-black w-100" id="replenishments_table">
+    <thead>
+    <tr>
+      <th>Requisition #</th>
+      <th>Date</th>
+      <th>PO #</th>
+      <th>PO Date</th>
+      <th>Added by</th>
+      <th>Quotation #</th>
+      <th class="d-none">Notes</th>
+    </tr>
+    </thead>
+    <tbody class="bg-white rounded">
+    <% @replenishments.each_with_index do |replenishment, index| %>
+      <tr class="cursor-pointer" href="<%= replenishment_path(replenishment) %>">
+        <td class="border-bottom rounded-sm text-light-black"><%= replenishment.id %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= date(replenishment.added_date) %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= replenishment.po_no %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= date(replenishment.po_issuance) %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= replenishment.created_by.name %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= replenishment.quotation_no %></td>
+        <td class="border-bottom rounded-sm text-light-black d-none"><%= replenishment.notes %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<br>

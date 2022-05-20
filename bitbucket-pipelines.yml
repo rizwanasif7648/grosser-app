@@ -1,0 +1,64 @@
+# This is a sample build configuration for Ruby.
+# Check our guides at https://confluence.atlassian.com/x/8r-5Mw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: ruby:2.7.0
+definitions:
+  build: &build
+    name: "Build and Push Docker Image"
+    services:
+      - docker
+    script:
+      - docker login -u omeraslam07 -p $DOCKER_HUB_PASS
+      - docker build -t w3-app -f Dockerfile.prod --build-arg SECRET_KEY_BASE . 
+      - docker tag w3-app "omeraslam07/w3-app:${BITBUCKET_COMMIT:0:7}"
+      - docker push "omeraslam07/w3-app:${BITBUCKET_COMMIT:0:7}"
+    
+  deploy: &deploy
+    name: "Deploy Image"
+    script:
+      - ssh root@161.35.101.107 "sudo docker pull omeraslam07/w3-app:${BITBUCKET_COMMIT:0:7}"
+      - ssh root@161.35.101.107 "sudo docker rm -f $IMAGE_NAME"
+      - ssh root@161.35.101.107 "sudo docker run -d -p $PORT:3000 --network app-tier --name=$IMAGE_NAME -e RAILS_ENV=$RAILS_ENV -e DB_HOST=$DB_HOST -e DB_USERNAME=$DB_USERNAME -e DB_PASSWORD=$DB_PASSWORD -e DB_NAME=$DB_NAME -e SECRET_KEY_BASE=$SECRET_KEY_BASE -e RAILS_LOG_TO_STDOUT=$RAILS_LOG_TO_STDOUT -e RAILS_SERVE_STATIC_FILES=$RAILS_SERVE_STATIC_FILES -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_BUCKET=$AWS_BUCKET -e AWS_REGION=$AWS_REGION -e SENDGRID_API_KEY=$SENDGRID_API_KEY -e SENDER_EMAIL=$SENDER_EMAIL -e HOST=$HOST -e PROFILE_PICTURE_PATH=$PROFILE_PICTURE_PATH -e IMAGE_PHOTO_PATH=$IMAGE_PHOTO_PATH -e ONESIGNAL_API_KEY=$ONESIGNAL_API_KEY -e ONESIGNAL_AUTH_KEY=$ONESIGNAL_AUTH_KEY -e ONESIGNAL_APP_ID=$ONESIGNAL_APP_ID -e REDIS_URL=$REDIS_URL omeraslam07/w3-app:${BITBUCKET_COMMIT:0:7} /bin/sh -c \"bin/puma -C config/puma.rb\""
+      - ssh root@161.35.101.107 "sudo docker image prune -a -f"
+    
+  caches:
+    bundler: ./vendor
+    yarn: ./node_modules 
+  services:
+    postgres:
+      image: postgres
+      environment:
+        POSTGRES_DB: ci_conceptual_test
+        POSTGRES_USER: test_user
+        POSTGRES_PASSWORD: test_user_password
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - bundler
+          - yarn 
+        script: # Modify the commands below to build your repository.
+          - export DATABASE_URL=postgresql://test_user:test_user_password@localhost/pipelines
+          - curl -sL https://deb.nodesource.com/setup_8.x | bash - 
+          - apt-get update && apt-get install -y nodejs apt-transport-https 
+          - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - 
+          - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list 
+          - apt-get update 
+          - apt-get install -y xvfb yarn qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x 
+          - rm -rf public/packs*/
+          - yarn install 
+          - bundle install --path vendor 
+          - bundle exec rubocop -a
+#          - RAILS_ENV=test bundle exec rails webpacker:compile
+#          - bundle exec rake db:setup db:migrate --trace RAILS_ENV=test
+          - bundle exec rake db:migrate:reset --trace RAILS_ENV=test
+          - bundle exec  rake spec --trace RAILS_ENV=test
+        services:
+          - postgres
+  branches:
+    master:
+      - step: *build
+      - step: *deploy

@@ -1,0 +1,73 @@
+<%= form_with(model: customer, local: true, class: 'p-4 bg-white my-3 rounded-sm', id: 'customer_form') do |form| %>
+  <%= render "shared/resource_errors", resource: customer %>
+  <div class="row">
+    <div class="col-sm-10">
+      <div class="row">
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :name, class: 'text-dark required'  %>
+          <%= form.text_field :name, class: 'extended-form-control required', placeholder: 'Enter name', required: true, maxlength: 70 %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :url,'URL', class: 'text-dark'  %>
+          <%= form.text_field :url, class: 'extended-form-control required', placeholder: 'Enter url', maxlength: 2000 %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :email, class: 'text-dark required'  %>
+          <%= form.email_field :email, class: 'extended-form-control required', placeholder: 'Enter email', required: true, disabled: customer.persisted?, maxlength: 255 %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :phone,'Phone', class: 'text-dark required'  %>
+          <%= form.text_field :phone, class: 'extended-form-control required', placeholder: 'Enter phone', required: true, maxlength: 15 %>
+        </div>
+
+        <div class="extended-form-group col-12 pl-sm-5 mb-0 mt-2">
+          <%= form.label :street_address,'Street Address', class: 'text-dark required'  %>
+          <%= form.text_field :street_address, class: 'extended-form-control required', placeholder: 'Enter street address', required: true, maxlength: 100 %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :country,'Country',  class: 'text-dark required'  %>
+          <%= form.select :country, countries, {:prompt => "Select country"}, class: 'extended-form-control', required: true%>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :state,'State',  class: 'text-dark required'  %>
+          <%= form.select :state, [], {:prompt => "Select state"}, class: 'extended-form-control required', required: true%>
+          <%= form.hidden_field :state, value: customer.state, id: 'state', name: 'state', disabled: true %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :city,'City',  class: 'text-dark required'  %>
+          <%= form.select :city, [], {:prompt => "Select city"}, class: 'extended-form-control', required: true%>
+          <%= form.hidden_field :city, value: customer.city, id: 'city', name: 'city', disabled: true %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :postcode,'Postcode', class: 'text-dark '  %>
+          <%= form.text_field :postcode, class: 'extended-form-control required', placeholder: 'Enter postcode', maxlength: 15 %>
+        </div>
+
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :status,'Status',  class: 'text-dark required' %>
+          <%= form.select(:status, Customer.status_options.map {|k, v| [k.humanize.capitalize, k]}, {:include_blank => 'Select status'}, {:required => true, class: 'extended-form-control'}) %>
+        </div>
+        <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+          <%= form.label :industry,'Industry',  class: 'text-dark'  %>
+          <%= form.select :industry, options_from_collection_for_select(industries, "value", "key", customer.industry), {:include_blank => "Select industry"}, class: 'extended-form-control'%>
+          <%= form.hidden_field :industry, value: customer.industry, id: 'industry', name: 'industry', disabled: true %>
+        </div>
+
+        <div class="extended-form-group col-sm-12 col-md-12 pl-sm-5 mb-0 mt-2">
+          <div class="actions justify-content-center row mx-0">
+            <%= form.submit 'Submit', class: 'btn extended-btn btn-danger px-5 mb-2' %>
+            <%= link_to 'Cancel', customers_path, class: 'btn extended-btn btn-default px-5 ml-sm-4 cancel-btn mb-2'%>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,149 @@
+<!-- Sidebar -->
+<ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
+
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+  </div>
+  <!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+    <%= image_tag 'logo_3x', class: 'img-fluid' %>
+  </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+
+  <!-- Nav Item - Dashboard -->
+  <% if accessable?('Dashboard', 'is_readable') %>
+    <li class="nav-item">
+      <a class="nav-link" href="/dashboard">
+        <i class="icon-dashboard"></i>
+        <span>Dashboard</span></a>
+    </li>
+  <% end %>
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+<!--    <div class="vertical_divider"></div>-->
+    <% if super_admin %>
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#system_admin_menu" aria-expanded="true" aria-controls="system_admin_menu">
+        <i class="icon-sys_admin"></i>
+        <span>System Admin</span>
+      </a>
+      <ul id="system_admin_menu" class="collapse list-unstyled" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <% if accessable?('Customers', 'is_readable') %>
+          <li class="nav-item">
+            <%= link_to customers_path, class: 'nav-link' do %>
+              <span>Customers</span>
+            <%end%>
+          </li>
+        <% end %>
+        <% if accessable?('Products', 'is_readable') %>
+          <li class="nav-item">
+            <%= link_to products_path, class: 'nav-link' do %>
+              <span>Products</span>
+            <%end%>
+          </li>
+        <% end %>
+        <% if accessable?('Roles & Permissions', 'is_readable') %>
+          <li class="nav-item">
+            <%= link_to roles_path, class: 'nav-link' do %>
+              <span>Roles & Permissions</span>
+            <%end%>
+          </li>
+        <% end %>
+        <% if accessable?('Create Incident', 'is_readable') %>
+          <li class="nav-item">
+            <%= link_to new_incident_path, class: 'nav-link' do %>
+              <span>Create Incident</span>
+            <%end%>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </li>
+
+  <!-- Nav Item - Boxes -->
+  <% if accessable?('Boxes', 'is_readable') %>
+    <li class="nav-item">
+      <%= link_to boxes_path, class: 'nav-link' do %>
+        <i class="icon-box"></i>
+        <span>Boxes</span>
+      <%end%>
+    </li>
+  <% end %>
+
+  <!-- Nav Item - Replenishment -->
+  <% if accessable?('Requisition', 'is_readable') %>
+    <li class="nav-item">
+      <%= link_to replenishments_path, class: 'nav-link' do %>
+        <i class="fa fa-refresh"></i>
+        <span>Requisition</span>
+      <%end%>
+    </li>
+  <% end %>
+
+  <!-- Nav Item - Replenishment -->
+  <% if accessable?('Requisition LogBook', 'is_readable') %>
+    <li class="nav-item">
+      <%= link_to logbook_replenishments_path, class: 'nav-link' do %>
+        <i class="icon-log_book"></i>
+        <span>Master Requisition</span>
+      <%end%>
+    </li>
+  <% end %>
+
+  <!-- Nav Item - Logbook -->
+  <li class="nav-item">
+    <% if accessable?('Adjustment', 'is_readable') %>
+      <%= link_to adjustments_path, class: 'nav-link' do %>
+        <i class="fas fa-sliders-h"></i>
+        <span>Adjustment</span>
+      <%end%>
+    <% end %>
+  </li>
+
+  <!-- Nav Item - Logbook -->
+  <li class="nav-item">
+    <% if accessable?('LogBook', 'is_readable') %>
+      <%= link_to incidents_path, class: 'nav-link' do %>
+        <i class="icon-log_book"></i>
+        <span>Log Book</span>
+      <%end%>
+    <% end %>
+  </li>
+
+  <!-- Nav Item - Users -->
+  <li class="nav-item">
+    <% if accessable?('Users', 'is_readable') %>
+      <%= link_to users_path, class: 'nav-link' do %>
+        <i class="icon-user"></i>
+        <span>Users</span>
+      <%end%>
+    <% end %>
+  </li>
+
+  <!-- Nav Item - Reports -->
+  <li class="nav-item">
+    <% if accessable?('Reports', 'is_readable') %>
+      <a class="nav-link" href="<%= reports_path %>">
+        <i class="icon-reports"></i>
+        <span>Reports</span>
+      </a>
+    <%end%>
+  </li>
+
+  <!-- Nav Item - Settings -->
+  <li class="nav-item">
+    <% if accessable?('Settings', 'is_readable') %>
+      <%= link_to settings_path, class: 'nav-link' do %>
+        <i class="icon-settings"></i>
+        <span>Settings</span>
+      <%end%>
+    <%end%>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
+
+</ul>
+<!-- End of Sidebar -->

@@ -1,0 +1,115 @@
+<%= form_with(model: replenishment, local: true, class: 'p-4 bg-white my-3 rounded-sm', id: 'replenishment_form') do |form| %>
+  <%= render "shared/resource_errors", resource: replenishment %>
+    <div class="row">
+      <div class="col-sm-10">
+        <div class="row">
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :customer_id, 'Select Customer', class: 'text-light-black required' %>
+            <%= form.select :customer_id, options_from_collection_for_select(customers, "id", "name", replenishment.customer_id), {:prompt => "Select Customer"}, required: true, class: 'extended-form-control required', required: true %>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :po_no, 'PO Number', class: 'text-dark required' %>
+            <%= form.text_field :po_no, class: 'extended-form-control required', placeholder: 'Enter PO Number', required: true %>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :po_issuance, 'PO Issuance', class: 'text-dark required' %>
+            <%= form.date_field :po_issuance, class: 'extended-form-control required', placeholder: 'Expiry Date', required: true, min: Date.today %>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :quotation_no, 'Quotation Number', class: 'text-dark required' %>
+            <%= form.text_field :quotation_no, class: 'extended-form-control required', placeholder: 'Enter Quotation No', required: true %>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :box_id, 'Select Box', class: 'text-light-black required' %>
+            <%= form.select :box_id, options_from_collection_for_select([], "id", "code"), {:prompt => "Select Box"}, required: true, class: 'extended-form-control required', required: true %>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :location, class: 'text-dark required' %>
+            <%= form.text_field :location, class: 'extended-form-control required', placeholder: 'Enter location', required: true, :readonly => true %>
+          </div>
+
+          <div class="extended-form-group col-sm-11 pl-sm-5 mb-0 mt-2">
+            <%= form.label :product_id, 'Select Product', class: 'text-light-black required' %>
+            <label class="error ml-2"> [ Hint: At least one product should be selected ]</label>
+            <%= form.text_field :product_id, class: 'extended-form-control', placeholder: 'Search Product', maxlength: 70 %>
+          </div>
+
+          <div class="extended-form-group col-sm-1 pl-sm-2 mb-0 mt-2">
+            <label for="nil" class="d-none d-sm-block">&nbsp;</label>
+            <%= link_to_add_row("<i class='fas fa-plus'></i>".html_safe, form, :replenishment_line_items, class: "btn py-2 px-3 small btn-success line_items") %>
+          </div>
+
+          <div class="extended-form-group col-sm-12 col-xl-12 col-lg-12 pl-sm-5 mb-0 mt-2 d-none" id="line_items_table">
+            <div class="table-responsive col-12 text-nowrap">
+              <table class="table table-borderless text-light-black w-100" id="replenishments_table">
+                <tbody class='fields bg-white rounded'>
+                <td class="rounded-sm text-light-black" id='selected_product_picture'></td>
+                <td class="rounded-sm text-light-black" id='selected_product_name'></td>
+                <td class="rounded-sm text-light-black" id='selected_product_id'></td>
+                <td class="rounded-sm text-light-black" id='selected_product_expiry'></td>
+                <td class="rounded-sm text-light-black" id='selected_product_quantity_before'></td>
+                <td class="rounded-sm text-light-black" id='selected_product_box'></td>
+                <td class="rounded-sm text-light-black" id='selected_product_box_code'></td>
+                <%= form.fields_for :replenishment_line_items do |line_item| %>
+                  <%= render 'replenishment_line_item', f: line_item %>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="extended-form-group col-sm-12 pl-sm-5 mb-0 mt-2">
+            <%= form.label :notes, 'Notes', class: 'text-light-black' %>
+            <%= form.text_field :notes, class: 'extended-form-control', placeholder: 'Enter Notes' %>
+          </div>
+
+          <div class="extended-form-group col-sm-5 pl-sm-5 mb-0 mt-2">
+            <%= form.label :photo, 'Upload Photo', class: 'text-dark'  %>
+            <div class="inner-addon right-addon form-group">
+              <i class="icon-photo text-danger cursor-pointer profile-picture-trigger bg-white"></i>
+              <%= text_field_tag '', '', :class => 'extended-form-control bg-white cursor-pointer profile-picture-trigger text-truncate', :id => 'picture_input', 'placeholder'=> 'Drag and Drop here OR Browse File', readonly: true %>
+              <%= form.file_field :photo, class: 'd-none', accept: 'image/*' %>
+            </div>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :note, 'Note', class: 'text-dark'  %>
+            <%= form.text_field :note, class: 'extended-form-control', placeholder: 'Enter Note' %>
+          </div>
+
+          <div class="extended-form-group col-sm-1 pl-sm-2 mb-0 mt-2">
+            <label for="nil" class="d-none d-sm-block">&nbsp;</label>
+            <%= link_to_add_row("<i class='fas fa-plus'></i>".html_safe, form, :uploads, class: "btn py-2 px-3 small btn-success upload_photo") %>
+          </div>
+
+          <div class="extended-form-group col-sm-12 col-xl-12 col-lg-12 pl-sm-5 mb-0 mt-2 d-none" id="uploads_table">
+            <div class="table-responsive col-12 text-nowrap">
+              <table class="table table-borderless text-light-black w-100">
+                <tbody class='upload_fields bg-white rounded'>
+                <%= form.fields_for :uploads do |upload| %>
+                  <%= render 'upload', f: upload %>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="extended-form-group col-sm-6 pl-sm-5 mb-0 mt-2">
+            <%= form.label :added_date, 'Added Date', class: 'text-dark required'  %>
+            <%= form.date_field :added_date, class: 'extended-form-control required', placeholder: 'Expiry Date', required: true, min: Date.today %>
+          </div>
+
+          <div class="extended-form-group col-sm-12 pl-sm-5 mb-0 mt-2 submit-btn-div">
+            <div class="actions text-center text-sm-left">
+              <%= form.submit 'Submit', class: 'btn extended-btn btn-danger px-4 px-md-5 mb-2', id: 'replenishment_submit'%>
+              <%= link_to 'Cancel', root_path, class: 'btn extended-btn btn-default px-4 px-md-5 ml-sm-4 cancel-btn mb-2'%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>

@@ -1,0 +1,18 @@
+$('#box-content').html("<%= j render 'product_box_modal', box: @box %>");
+$('#box-modal').modal('show');
+
+$("select#product_id").on("change", function(e){
+  input = $("#product_box_form input#expiry");
+  if($(this).find(":selected").attr("data-expiry") == "true"){
+    input.removeAttr("disabled");
+    input.attr("required", true);
+    input.parents(".extended-form-group").removeClass("d-none");
+  }
+  else{
+    input.removeAttr("required");
+    input.attr("disabled", true);
+    input.parents(".extended-form-group").addClass("d-none")
+  }
+});
+
+$("select#product_id").select2();

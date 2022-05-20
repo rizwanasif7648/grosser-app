@@ -1,0 +1,6 @@
+$('#notifications_dropdown').html("<%= j render 'shared/notifications', notifications: @notifications %>");
+if ($("#notifications_dropdown").is(":visible")) {
+  setTimeout(function () {
+    mark_notification_as_read();
+  }, 1000);
+}

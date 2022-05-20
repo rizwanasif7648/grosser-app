@@ -1,0 +1,47 @@
+<div class="row py-2 bg-white mx-0">
+  <div class="col-sm-4 pl-sm-1">
+    <%= select_tag "customer",  options_from_collection_for_select(customers, "id", "name", @customer.id), {:id =>"selected_customer_report",:class => 'extended-form-control',:prompt => "Please Select a Customer"} %>
+  </div>
+  <div class="col-sm-3 pr-sm-0 offset-sm-5">
+    <div class="row">
+      <!-- Topbar Search -->
+      <div class="d-sm-inline-block col-sm-12 px-sm-3 pr-sm-0 my-2 my-sm-0">
+        <div class="input-group">
+          <input id="medicine_reports_table_search_field" type="text" class="extended-form-control bg-white border-0 small" placeholder="Search product" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-danger" type="button">
+              <i class="fas fa-search fa-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive col-12 text-nowrap px-sm-0 pb-3 border-bottom">
+  <table class="table text-light-black w-100" id="medicine_reports_table">
+    <thead>
+    <tr>
+      <th class="border-0">Medicine Name</th>
+      <th class="border-0">Total</th>
+      <% @top_boxes.each_with_index do |box, index| %>
+        <th class="border-0"><%= box[1] %></th>
+      <% end %>
+    </tr>
+    </thead>
+
+    <tbody class="bg-white rounded">
+    <% @top_products.each_with_index do |product, index| %>
+      <tr>
+        <td><%= product[1] %></td>
+        <td><%= product[2] %></td>
+        <% @top_boxes.each_with_index do |box, index| %>
+          <td><%= get_product_box_count(box[0], product[0]) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<br>

@@ -1,0 +1,23 @@
+<p>Dear <%= @user.name %>!</p>
+<p>Our record indicates that the following products have expired in the box <%= @box.code %>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Product Name</th>
+    <th>Quantity Left</th>
+    <th>Expiry</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @product.name %></td>
+      <td><%= @product_box.remaining %></td>
+      <td><%= @product_box.expiry %></td>
+    </tr>
+  </tbody>
+</table>
+<br/>
+<br/>
+<p>DO NOT REPLY TO THIS EMAIL</p>
+

@@ -1,0 +1,96 @@
+<%= render 'shared/title_bar', heading: 'Users' %>
+<div class="row py-2 border-bottom mx-0">
+  <div class="col-sm-4 pl-md-0 pl-sm-1 col-xl-4">
+    <%= label_tag :customer_id,'Select Customer', class: 'text-light-black' %>
+    <%= select_tag "customer",  options_from_collection_for_select(customers, "id", "name", @customer.id), {:id =>"selected_customer",:class => 'extended-form-control',:prompt => "Please Select a Customer"} %>
+    <%= hidden_field_tag "customer_id", params[:customer_id] ,id:"customer_id" %>
+  </div>
+  <div class="col-sm-8 pr-sm-0 col-xl-8 offset-xl-0 offset-md-0">
+    <label for="nil" class="d-none d-sm-block">&nbsp;</label>
+    <div class="row">
+      <!-- Topbar Search -->
+      <div class="d-sm-inline-block col-sm-7 col-md-6 offset-md-2 col-lg-5 offset-lg-4 col-xl-4 offset-xl-5 px-md-0 pr-md-0 px-sm-3 pr-sm-0 my-2 my-sm-0">
+        <div class="input-group">
+          <input id="users_search_field" type="text" class="form-control bg-white border-0 small" placeholder="Search User" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-danger" type="button">
+              <i class="fas fa-search fa-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-5 col-md-4 col-lg-3 col-xl-3 my-2 my-sm-0 text-center-sm">
+        <% if accessable?('Users', 'is_createable') %>
+          <a href="<%= new_user_path %>" class="btn btn-danger btn-block">
+            <small class="small">
+              Add New
+              <i class="fa fa-plus"></i>
+            </small>
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="table-responsive col-12 text-nowrap px-sm-0 pb-3 border-bottom">
+  <% is_permissible = permissible?('Users') %>
+  <table class="table table-borderless text-light-black w-100" id="users_table">
+    <thead>
+      <tr>
+        <th class="no_sorting">
+        </th>
+        <th>Name</th>
+        <th>Contact Number</th>
+        <th>Boxes</th>
+        <th>Box locations</th>
+        <th>Status</th>
+        <% if is_permissible %><th class="invisible"></th><% end %>
+      </tr>
+    </thead>
+
+    <tbody class="bg-white rounded">
+    <% @users.each_with_index do |user, index| %>
+      <tr class="cursor-pointer" href="<%= user_path(user) %>">
+        <td class="border-bottom"><%= user.id %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= user.name %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= user.phone %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= user_boxes(user) %></td>
+        <td class="border-bottom rounded-sm text-light-black"><%= user_boxes_locations(user) %></td>
+        <td class="border-bottom rounded-sm text-light-black">
+          <%= user.status.titleize %>
+          <i class="fas fa-circle small <%= user.color %>"></i>
+        </td>
+        <% if is_permissible %>
+          <td class="border-bottom rounded-sm text-light-black">
+            <a disabled="false" class="btn btn-danger btn-sm" href="#" id="actions_dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Actions
+              <i class="fas fa-caret-down"></i>
+            </a>
+            <div class="dropdown-menu align-content-center shadow " aria-labelledby="actions_dropdown">
+              <% if accessable?('Users', 'is_readable') %>
+                <a class="dropdown-item px-2" href="<%= user_path(user) %>" >
+                  <i class="small fas fa-eye mx-1"></i>
+                  View
+                </a>
+              <% end %>
+              <% if accessable?('Users', 'is_updateable') %>
+                <a class="dropdown-item px-2" href="<%= edit_user_path(user) %>">
+                  <i class="small fas fa-pencil-alt mx-1"></i>
+                  Edit
+                </a>
+              <% end %>
+              <% if accessable?('Users', 'is_deleteable') %>
+                <a class="dropdown-item px-2" href="<%= user_path(user) %>" data-method="delete" data-confirm="Are you sure?">
+                  <i class="small fas fa-trash mx-1"></i>
+                  Delete
+                </a>
+              <% end %>
+            </div>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<br>
